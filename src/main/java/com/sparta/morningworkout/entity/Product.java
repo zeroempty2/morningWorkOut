@@ -1,12 +1,15 @@
 package com.sparta.morningworkout.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@SuperBuilder
 public class Product extends TimeStamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
