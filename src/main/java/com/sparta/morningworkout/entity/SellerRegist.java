@@ -19,4 +19,12 @@ public class SellerRegist {
     public boolean isAccept() {
         return false;
     }
+    private String introcontent;
+    private String category;
+
+    public SellerRegist(long userId, String introcontent, String category) {
+        this.userId = userId;
+        this.introcontent = introcontent;
+        this.category = category;
+    }
 }

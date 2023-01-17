@@ -8,6 +8,6 @@ public class UserListResponseDto {
     private String username;
 
     public UserListResponseDto(User user) {
-        this.username = user.getUsernameName();
+        this.username = user.getUsername();
     }
 }
