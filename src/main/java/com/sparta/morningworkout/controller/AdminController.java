@@ -7,7 +7,6 @@ import com.sparta.morningworkout.service.AdminServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,14 +45,14 @@ public class AdminController {
         StatusResponseDto statusResponseDto =  adminService.acceptSellerRegist(authorizationRequestId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-        return new ResponseEntity<>(statusResponseDto, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(statusResponseDto);
     }
     @DeleteMapping("/authorization/{authorizationRequestId}")
     public ResponseEntity<StatusResponseDto> deleteSellerRegist(@PathVariable Long authorizationRequestId){
         StatusResponseDto statusResponseDto =  adminService.deleteSellerRegist(authorizationRequestId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-        return new ResponseEntity<>(statusResponseDto, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(statusResponseDto);
     }
 }
 
