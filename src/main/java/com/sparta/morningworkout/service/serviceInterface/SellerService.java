@@ -1,4 +1,4 @@
-package com.sparta.morningworkout.service;
+package com.sparta.morningworkout.service.serviceInterface;
 
 public interface SellerService {
     void showCustomerList();

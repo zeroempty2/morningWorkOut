@@ -1,15 +1,16 @@
 package com.sparta.morningworkout.service;
 
 
-import com.sparta.morningworkout.dto.SellerListResponseDto;
+import com.sparta.morningworkout.dto.sellers.SellerListResponseDto;
 import com.sparta.morningworkout.entity.CustomerRequestList;
 import com.sparta.morningworkout.entity.Product;
 import com.sparta.morningworkout.entity.SellerRegist;
-import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.repository.CustomerRequestListRepository;
 import com.sparta.morningworkout.repository.ProductRepository;
 import com.sparta.morningworkout.repository.SellerRegistRepository;
 import com.sparta.morningworkout.repository.UserRepository;
+import com.sparta.morningworkout.service.serviceInterface.CustomerService;
+import com.sparta.morningworkout.service.serviceInterface.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
 
     private final SellerRegistRepository sellerRegistRepository;
     private final UserRepository userRepository;

@@ -1,4 +1,4 @@
-package com.sparta.morningworkout.dto;
+package com.sparta.morningworkout.dto.profile;
 
 import com.sparta.morningworkout.entity.Profile;
 import lombok.Getter;
@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ShowCustomerProfileResponse {
+public class ShowCustomerProfileResponseDto {
     private String nickname;
 //    private String image;
-    public ShowCustomerProfileResponse(Profile profile) {
+    public ShowCustomerProfileResponseDto(Profile profile) {
         this.nickname = profile.getNickname();
     }
 }

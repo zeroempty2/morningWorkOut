@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sparta.morningworkout.dto.ShowCustomerProfileResponse;
-import com.sparta.morningworkout.dto.ShowSellerProfileResponse;
-import com.sparta.morningworkout.dto.UpdateCustomerProfileRequest;
-import com.sparta.morningworkout.dto.UpdateSellerProfileRequest;
+import com.sparta.morningworkout.dto.profile.ShowCustomerProfileResponseDto;
+import com.sparta.morningworkout.dto.profile.ShowSellerProfileResponseDto;
+import com.sparta.morningworkout.dto.profile.UpdateCustomerProfileRequestDto;
+import com.sparta.morningworkout.dto.profile.UpdateSellerProfileRequestDto;
 import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.entity.UserRoleEnum;
 import com.sparta.morningworkout.service.ProfileServiceImpl;
@@ -31,7 +31,7 @@ public class ProfileController {
 
 	@GetMapping("/customer")
 	public ResponseEntity showCustomerProfile(String nickname, User user) {
-		ShowCustomerProfileResponse showCustomerProfile = new ShowCustomerProfileResponse();
+		ShowCustomerProfileResponseDto showCustomerProfile = new ShowCustomerProfileResponseDto();
 		if (user.getRole().equals(UserRoleEnum.CUSTOMER)) {
 			showCustomerProfile = profileService.showCustomerProfile(nickname);
 		}
@@ -40,7 +40,7 @@ public class ProfileController {
 
 	@GetMapping("/seller")
 	public ResponseEntity showSellerProfile(User user) {
-		List<ShowSellerProfileResponse> showSellerProfileList  = new ArrayList<>();
+		List<ShowSellerProfileResponseDto> showSellerProfileList  = new ArrayList<>();
 		if (user.getRole().equals(UserRoleEnum.SELLER)) {
 			showSellerProfileList = profileService.showSellerProfile();
 		}
@@ -48,13 +48,13 @@ public class ProfileController {
 	}
 
 	@PutMapping("/customer/{id}")
-	public ResponseEntity updateCustomerProfile(@PathVariable long id, @RequestBody UpdateCustomerProfileRequest request) {
+	public ResponseEntity updateCustomerProfile(@PathVariable long id, @RequestBody UpdateCustomerProfileRequestDto request) {
 		profileService.updateCustomerProfile(id, request);
 		return new ResponseEntity<>("프로필 수정이 완료되었습니다.", HttpStatus.OK);
 	}
 
 	@PutMapping("/seller/{id}")
-	public ResponseEntity updateSellerProfile(@PathVariable long id, @RequestBody UpdateSellerProfileRequest request) {
+	public ResponseEntity updateSellerProfile(@PathVariable long id, @RequestBody UpdateSellerProfileRequestDto request) {
 		profileService.updateSellerProfile(id, request);
 		return new ResponseEntity<>("프로필 수정이 완료되었습니다.", HttpStatus.OK);
 	}

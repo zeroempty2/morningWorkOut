@@ -1,4 +1,4 @@
-package com.sparta.morningworkout.service;
+package com.sparta.morningworkout.service.serviceInterface;
 
 import com.sparta.morningworkout.dto.product.ProductRequestDto;
 import com.sparta.morningworkout.dto.product.ProductResponseDto;

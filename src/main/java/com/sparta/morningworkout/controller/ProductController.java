@@ -5,7 +5,7 @@ import com.sparta.morningworkout.dto.product.ProductRequestDto;
 import com.sparta.morningworkout.dto.product.ProductResponseDto;
 import com.sparta.morningworkout.dto.StatusResponseDto;
 import com.sparta.morningworkout.dto.product.ProductUpdateRequestDto;
-import com.sparta.morningworkout.service.ProductService;
+import com.sparta.morningworkout.service.serviceInterface.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

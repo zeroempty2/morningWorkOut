@@ -5,6 +5,7 @@ import com.sparta.morningworkout.dto.product.ProductResponseDto;
 import com.sparta.morningworkout.dto.product.ProductUpdateRequestDto;
 import com.sparta.morningworkout.entity.Product;
 import com.sparta.morningworkout.repository.ProductRepository;
+import com.sparta.morningworkout.service.serviceInterface.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

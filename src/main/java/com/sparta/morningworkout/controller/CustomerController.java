@@ -1,9 +1,8 @@
 package com.sparta.morningworkout.controller;
 
-import com.sparta.morningworkout.dto.SellerListResponseDto;
+import com.sparta.morningworkout.dto.sellers.SellerListResponseDto;
 import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.service.CustomerServiceImpl;
-import com.sparta.morningworkout.service.SellerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

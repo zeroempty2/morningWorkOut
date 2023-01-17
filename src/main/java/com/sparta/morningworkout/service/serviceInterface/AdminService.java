@@ -1,8 +1,8 @@
-package com.sparta.morningworkout.service;
+package com.sparta.morningworkout.service.serviceInterface;
 
-import com.sparta.morningworkout.dto.SellerRegistResponseDto;
+import com.sparta.morningworkout.dto.admin.SellerRegistResponseDto;
 import com.sparta.morningworkout.dto.StatusResponseDto;
-import com.sparta.morningworkout.dto.UserListResponseDto;
+import com.sparta.morningworkout.dto.admin.UserListResponseDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

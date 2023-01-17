@@ -1,4 +1,4 @@
-package com.sparta.morningworkout.dto;
+package com.sparta.morningworkout.dto.sellers;
 
 import com.sparta.morningworkout.entity.SellerRegist;
 import lombok.Getter;

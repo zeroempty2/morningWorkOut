@@ -1,7 +1,6 @@
-package com.sparta.morningworkout.service;
+package com.sparta.morningworkout.service.serviceInterface;
 
-import com.sparta.morningworkout.dto.SellerListResponseDto;
-import com.sparta.morningworkout.entity.User;
+import com.sparta.morningworkout.dto.sellers.SellerListResponseDto;
 
 import java.util.List;
 

@@ -1,13 +1,14 @@
 package com.sparta.morningworkout.service;
 
-import com.sparta.morningworkout.dto.SellerRegistResponseDto;
+import com.sparta.morningworkout.dto.admin.SellerRegistResponseDto;
 import com.sparta.morningworkout.dto.StatusResponseDto;
-import com.sparta.morningworkout.dto.UserListResponseDto;
+import com.sparta.morningworkout.dto.admin.UserListResponseDto;
 import com.sparta.morningworkout.entity.SellerRegist;
 import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.entity.UserRoleEnum;
 import com.sparta.morningworkout.repository.SellerRegistRepository;
 import com.sparta.morningworkout.repository.UserRepository;
+import com.sparta.morningworkout.service.serviceInterface.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AdminServiceImpl implements AdminService{
+public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final SellerRegistRepository sellerRegistRepository;
 

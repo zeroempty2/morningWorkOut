@@ -1,6 +1,8 @@
 package com.sparta.morningworkout.service;
 
-public class SellerServiceImpl implements SellerService{
+import com.sparta.morningworkout.service.serviceInterface.SellerService;
+
+public class SellerServiceImpl implements SellerService {
 
 
     @Override

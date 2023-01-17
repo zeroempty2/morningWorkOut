@@ -19,12 +19,16 @@ public class SellerRegist {
     public boolean isAccept() {
         return false;
     }
-    private String introcontent;
-    private String category;
+    @Column
+    private String infoContent;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private CategoryEnum category;
 
-    public SellerRegist(long userId, String introcontent, String category) {
+    public SellerRegist(long userId, String username, String infoContent, CategoryEnum category) {
         this.userId = userId;
-        this.introcontent = introcontent;
+        this.username = username;
+        this.infoContent = infoContent;
         this.category = category;
     }
 }

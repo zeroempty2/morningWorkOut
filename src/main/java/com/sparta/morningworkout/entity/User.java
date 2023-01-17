@@ -25,13 +25,11 @@ public class User {
     public void changeCustomer(){
         this.role = UserRoleEnum.CUSTOMER;
     }
-    private String nickname;
 
-    public User(String username, String password, UserRoleEnum role, String nickname) {
+    public User(String username, String password, UserRoleEnum role) {
         this.username = username;
         this.password = password;
         this.role = role;
-        this.nickname = nickname;
     }
 }
 
