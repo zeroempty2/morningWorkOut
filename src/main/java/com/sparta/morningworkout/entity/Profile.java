@@ -33,6 +33,10 @@ public class Profile {
         this.infoContent = null;
         this.category = null;
     }
+    public void authorizationProfileUpdate(SellerRegist sellerRegist) {
+        this.infoContent = sellerRegist.getInfoContent();
+        this.category = sellerRegist.getCategory();
+    }
 
     public void customerUpdate(UpdateCustomerProfileRequestDto request) {
         this.nickname = request.getNickname();
