@@ -9,8 +9,8 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @Entity
-@NoArgsConstructor
 @SuperBuilder
+@NoArgsConstructor
 public class Product extends TimeStamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
