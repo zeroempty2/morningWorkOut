@@ -14,4 +14,5 @@ public class SellerRegistList {
     @Column(nullable = false)
     private long userId;
 
+
 }
