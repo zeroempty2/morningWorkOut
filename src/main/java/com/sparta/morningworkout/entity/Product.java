@@ -1,5 +1,6 @@
 package com.sparta.morningworkout.entity;
 
+import com.sparta.morningworkout.dto.product.ProductUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +24,8 @@ public class Product extends TimeStamped{
     @Column
     @Enumerated(EnumType.STRING)
     private CategoryEnum category;
+
+    public void update(ProductUpdateRequestDto productUpdateRequestDto) {
+        this.price = productUpdateRequestDto.getPrice();
+    }
 }
