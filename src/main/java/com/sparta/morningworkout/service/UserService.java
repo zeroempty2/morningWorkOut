@@ -1,8 +1,14 @@
 package com.sparta.morningworkout.service;
 
+import com.sparta.morningworkout.dto.LoginUserRequest;
+import com.sparta.morningworkout.dto.SellerRegistRequest;
+import com.sparta.morningworkout.dto.Signup;
+import com.sparta.morningworkout.entity.SellerRegistList;
+import jakarta.servlet.http.HttpServletRequest;
+
 public interface UserService {
-    void signup();
-    void login();
-    void logout();
-    void sellerRegist();
+    void signup(Signup signup);
+    String login(LoginUserRequest loginUserRequest);
+    void logout(HttpServletRequest request);
+    void sellerRegist(SellerRegistRequest sellerRegistRequest, HttpServletRequest request);
 }

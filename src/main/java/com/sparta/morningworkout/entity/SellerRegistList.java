@@ -13,5 +13,12 @@ public class SellerRegistList {
     private long id;
     @Column(nullable = false)
     private long userId;
+    private String introcontent;
+    private String category;
 
+    public SellerRegistList(long userId, String introcontent, String category) {
+        this.userId = userId;
+        this.introcontent = introcontent;
+        this.category = category;
+    }
 }
