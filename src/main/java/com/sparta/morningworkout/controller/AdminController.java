@@ -23,17 +23,23 @@ public class AdminController {
     @GetMapping("/customers")
     public ResponseEntity<Page<UserListResponseDto>> showCustomerList(@RequestParam int page){
         Page<UserListResponseDto> responseDto =  adminService.showCustomerList(page);
-        return ResponseEntity.ok().body(responseDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        return ResponseEntity.ok().headers(headers).body(responseDto);
     }
     @GetMapping("/sellers")
     public ResponseEntity<Page<UserListResponseDto>> showSellerList(@RequestParam int page){
         Page<UserListResponseDto> responseDto =  adminService.showSellerList(page);
-        return ResponseEntity.ok().body(responseDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        return ResponseEntity.ok().headers(headers).body(responseDto);
     }
     @GetMapping("/authorizations")
     public ResponseEntity<List<SellerRegistResponseDto>> showSellerRegistList(){
         List<SellerRegistResponseDto> responseDto =  adminService.showSellerRegistList();
-        return ResponseEntity.ok().body(responseDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        return ResponseEntity.ok().headers(headers).body(responseDto);
     }
     @PostMapping("/authorization/{authorizationRequestId}")
     public ResponseEntity<StatusResponseDto> acceptSellerRegist(@PathVariable Long authorizationRequestId){
