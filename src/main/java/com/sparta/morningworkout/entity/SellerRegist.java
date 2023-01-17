@@ -15,4 +15,8 @@ public class SellerRegist {
     private long userId;
     @Column(nullable = false)
     private String username;
+
+    public boolean isAccept() {
+        return false;
+    }
 }
