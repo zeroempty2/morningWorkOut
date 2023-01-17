@@ -18,4 +18,11 @@ public class User {
     @Column
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
+
+    public void changeSeller(){
+        this.role = UserRoleEnum.SELLER;
+    }
+    public void changeCustomer(){
+        this.role = UserRoleEnum.CUSTOMER;
+    }
 }
