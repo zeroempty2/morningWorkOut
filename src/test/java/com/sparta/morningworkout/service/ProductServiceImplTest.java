@@ -4,6 +4,7 @@ import com.sparta.morningworkout.dto.product.ProductRequestDto;
 import com.sparta.morningworkout.dto.product.ProductResponseDto;
 import com.sparta.morningworkout.entity.CategoryEnum;
 import com.sparta.morningworkout.entity.Product;
+import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,7 @@ class ProductServiceImplTest {
 
         //given
         Product product = mock(Product.class);
+        User user = mock(User.class);
         ProductRequestDto productRequestDto = mock(ProductRequestDto.class);
 
         productRequestDto = ProductRequestDto.builder()
@@ -48,7 +50,7 @@ class ProductServiceImplTest {
                 .build();
 
         //when
-        String result = productService.addProduct(productRequestDto);
+        String result = productService.addProduct(productRequestDto,user);
 
 
         Assertions.assertSame("해당 상품을 등록 완료했습니다", result);
