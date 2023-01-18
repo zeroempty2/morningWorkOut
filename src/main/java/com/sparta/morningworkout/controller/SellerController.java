@@ -43,8 +43,8 @@ public class SellerController {
     }
 
     @GetMapping("/products/list")
-    public ResponseEntity<Page<ProductResponseDto>> showMyProducts(@RequestParam int page,User user){
-        Page<ProductResponseDto> products = sellerService.showMyProducts(page-1,user);
+    public ResponseEntity<Page<ProductResponseDto>> showMyProducts(@RequestParam int page,@RequestParam String sortBy ,User user){
+        Page<ProductResponseDto> products = sellerService.showMyProducts(page-1,sortBy,user);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(products);
