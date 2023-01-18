@@ -56,8 +56,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다"));
         if (!user.getPassword().equals(loginUserRequestDto.getPassword()))
         { throw new IllegalArgumentException("비밀번호 불일치"); }
-        String generatedToken = jwtUtil.createToken(user.getUsername(), user.getRole());
-        return generatedToken;
+        return jwtUtil.createToken(user.getUsername(), user.getRole());
     }
 
     @Override
@@ -82,7 +81,8 @@ public class UserServiceImpl implements UserService {
         if (token != null) {
             if (jwtUtil.validateToken(token)) {
                 claims = jwtUtil.getUserInfoFromToken(token);
-                SellerRegist sellerRegist = new SellerRegist(Long.valueOf(claims.getId()),claims.getSubject(),sellerRegistRequestDto.getInfocontent(),sellerRegistRequestDto.getCategoryEnum());
+                SellerRegist sellerRegist = new SellerRegist(Long.parseLong(claims.getId()),claims.getSubject(),
+                        sellerRegistRequestDto.getInfocontent(),sellerRegistRequestDto.getCategoryEnum());
                 sellerRegistRepository.save(sellerRegist);
             } else { throw  new IllegalArgumentException("유효하지 않은 토큰"); }
         } else { throw new IllegalArgumentException("토큰값이 잘못됨"); }

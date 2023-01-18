@@ -1,7 +1,6 @@
 package com.sparta.morningworkout.controller;
 
 import com.sparta.morningworkout.dto.users.LoginUserRequestDto;
-import com.sparta.morningworkout.dto.ResponseDto;
 import com.sparta.morningworkout.dto.users.SellerRegistRequestDto;
 import com.sparta.morningworkout.dto.users.SignupDto;
 import com.sparta.morningworkout.jwtUtil.JwtUtil;
@@ -10,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,16 +21,16 @@ public class UserController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/sign")
-    public ResponseDto createUser(@RequestBody @Valid SignupDto sign) {
+    public ResponseEntity createUser(@RequestBody @Valid SignupDto sign) {
         userServiceimpl.signup(sign);
-        return new ResponseDto(201L, "회원가입이 완료되었습니다");
+        return new ResponseEntity<>("회원가입 성공", HttpStatus.CREATED);
     }
 
     @GetMapping("/login")
-    public ResponseDto login(@RequestBody LoginUserRequestDto loginUserRequestDto, HttpServletResponse response) {
+    public ResponseEntity login(@RequestBody LoginUserRequestDto loginUserRequestDto, HttpServletResponse response) {
         String generatedToken = userServiceimpl.login(loginUserRequestDto);
         response.addHeader(jwtUtil.AUTHORIZATION_HEADER, generatedToken);
-        return new ResponseDto(200L, "로그인 성공");
+        return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
     }
 
     @PostMapping("/logout")
@@ -38,8 +39,8 @@ public class UserController {
     }
 
     @PostMapping("/athorization")
-    public ResponseDto athorization(@RequestBody SellerRegistRequestDto sellerRegistRequestDto, HttpServletRequest request) {
+    public ResponseEntity athorization(@RequestBody SellerRegistRequestDto sellerRegistRequestDto, HttpServletRequest request) {
         userServiceimpl.sellerRegist(sellerRegistRequestDto, request);
-        return new ResponseDto(200L, "등록 요청이 성공했습니다");
+        return new ResponseEntity<>("등록 요청이 성공했습니다", HttpStatus.OK);
     }
 }
