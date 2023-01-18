@@ -31,5 +31,9 @@ public class User {
         this.password = password;
         this.role = role;
     }
+
+    public boolean checkUser(Long userId){
+        return userId.equals(id);
+    }
 }
 

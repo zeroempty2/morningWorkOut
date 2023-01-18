@@ -50,13 +50,13 @@ class ProductControllerTest {
     @DisplayName("전체 상품 목록 조회 메서드")
     void showProductsList() throws Exception {
 
-        List<ProductResponseDto> productResponseDtos = new ArrayList<>();
+//        List<ProductResponseDto> productResponseDtos = new ArrayList<>();
 //        given(productService.showProductList()).willReturn(productResponseDtos);
 
 
         mockMvc.perform(get("/products/list")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(productResponseDtos))
+//                        .content(objectMapper.writeValueAsBytes(productResponseDtos))
                         .accept(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isOk());

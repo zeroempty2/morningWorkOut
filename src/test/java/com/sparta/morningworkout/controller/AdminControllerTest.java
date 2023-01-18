@@ -1,6 +1,7 @@
 package com.sparta.morningworkout.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.morningworkout.dto.StatusResponseDto;
 import com.sparta.morningworkout.dto.admin.SellerRegistResponseDto;
 import com.sparta.morningworkout.dto.admin.UserListResponseDto;
 import com.sparta.morningworkout.entity.User;
@@ -23,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -86,7 +88,7 @@ class AdminControllerTest {
         List<SellerRegistResponseDto> sellerRegistResponseDto = new ArrayList<>();
         when(adminService.showSellerRegistList()).thenReturn(sellerRegistResponseDto);
 
-        mockMvc.perform(get("/authorizations")
+        mockMvc.perform(get("/admin/authorizations")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(sellerRegistResponseDto))
                         .accept(MediaType.APPLICATION_JSON)
@@ -96,14 +98,18 @@ class AdminControllerTest {
     @Test
     @DisplayName("판매자 신청 수락")
     void acceptSellerRegist() throws Exception {
-        mockMvc.perform(patch("/authorization/accept/1")
+        Long authorizationRequestId =1L;
+//        StatusResponseDto statusResponseDto = mock(StatusResponseDto.class);
+//        statusResponseDto = new StatusResponseDto(200, "판매자 승인이 완료되었습니다");
+        mockMvc.perform(patch("/admin/authorization/accept/{authorizationRequestId}",authorizationRequestId)
+//                        .content(objectMapper.writeValueAsBytes(statusResponseDto))
                         .with(csrf()))
                         .andExpect(status().isOk());
     }
     @Test
     @DisplayName("판매자 권한 삭제")
     void deleteSellerRegist() throws Exception {
-        mockMvc.perform(patch("/authorization/delete/1")
+        mockMvc.perform(patch("/admin/authorization/delete/1")
                         .with(csrf()))
                         .andExpect(status().isOk());
     }

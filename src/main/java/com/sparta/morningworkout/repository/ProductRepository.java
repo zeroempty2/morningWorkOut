@@ -11,8 +11,11 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findById(Long productId);
 
+
     @Override
     void deleteById(Long productId);
+
+    Page<Product> findAll(Pageable pageable);
 
     List<Product> findAllByUserId(Long userId);
     Page<Product> findAllByUserId(Long userId, Pageable pageable);
