@@ -5,11 +5,13 @@ import com.sparta.morningworkout.entity.CategoryEnum;
 import com.sparta.morningworkout.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class ProductResponseDto {
 
     private String productName;
