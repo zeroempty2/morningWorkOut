@@ -7,9 +7,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ShowCustomerProfileResponseDto {
+    private long id;
     private String nickname;
 //    private String image;
-    public ShowCustomerProfileResponseDto(Profile profile) {
+    public ShowCustomerProfileResponseDto(long id, Profile profile) {
+        this.id = id;
         this.nickname = profile.getNickname();
     }
+
 }

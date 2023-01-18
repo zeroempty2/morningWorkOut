@@ -23,6 +23,8 @@ public class Profile {
 //    private String image;
     @Column
     private String infoContent;
+
+
     @Column
     @Enumerated(EnumType.STRING)
     private CategoryEnum category;
@@ -33,6 +35,26 @@ public class Profile {
         this.infoContent = null;
         this.category = null;
     }
+
+    public Profile(Long id, String nickname, SellerRegist regist) {
+        this.id = id;
+        this.nickname = nickname;
+        this.infoContent = regist.getInfoContent();
+        this.category = regist.getCategory();
+    }
+
+
+    // public Profile(User user, CreateCustomerRequestDto request) {
+    //     this.id = getId();
+    //     this.nickname = request.getNickname();
+    // }
+    //
+    // public Profile(User user, CreateSellerRequestDto request) {
+    //     this.id = getId();
+    //     this.nickname = request.getNickname();
+    //     this.infoContent = request.getInfoContent();
+    //     this.category = getCategory();
+    // }
 
     public void customerUpdate(UpdateCustomerProfileRequestDto request) {
         this.nickname = request.getNickname();
