@@ -8,8 +8,8 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface AdminService {
-    Page<UserListResponseDto> showCustomerList(int page);
-    Page<UserListResponseDto> showSellerList(int page);
+    Page<UserListResponseDto> showCustomerList(int page,int size);
+    Page<UserListResponseDto> showSellerList(int page,int size);
     List<SellerRegistResponseDto> showSellerRegistList();
     StatusResponseDto acceptSellerRegist(Long authorizationRequestId);
     StatusResponseDto deleteSellerRegist(Long authorizationRequestId);

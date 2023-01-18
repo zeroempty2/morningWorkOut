@@ -29,17 +29,16 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<UserListResponseDto> showCustomerList(int page) {
-//        Sort sort = Sort.by(Sort.Direction.DESC, "username");
-        Pageable pageable = PageRequest.of(page, 10);
+    public Page<UserListResponseDto> showCustomerList(int page,int size) {
+        Pageable pageable = PageRequest.of(page, size);
         Page<User> customers = userRepository.findAllByRoleOrderByIdDesc(UserRoleEnum.CUSTOMER,pageable);
         return new PageImpl<>(customers.stream().map(UserListResponseDto::new).collect(Collectors.toList()));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<UserListResponseDto> showSellerList(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+    public Page<UserListResponseDto> showSellerList(int page,int size) {
+        Pageable pageable = PageRequest.of(page, size);
         Page<User> sellers = userRepository.findAllByRoleOrderByIdDesc(UserRoleEnum.SELLER,pageable);
         return new PageImpl<>(sellers.stream().map(UserListResponseDto::new).collect(Collectors.toList()));
     }
