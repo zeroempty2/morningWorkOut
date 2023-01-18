@@ -49,6 +49,6 @@ public class ProductController {
     @GetMapping("/list/seller/{sellerId}")
     public ResponseEntity showProductBySeller(@PathVariable Long sellerId){
        List<ProductResponseDto> productResponseDtos = productService.showProductBySeller(sellerId);
-        return ResponseEntity.status(HttpStatus.OK).body(productResponseDtos);
+       return ResponseEntity.status(HttpStatus.OK).body(productResponseDtos);
     }
 }

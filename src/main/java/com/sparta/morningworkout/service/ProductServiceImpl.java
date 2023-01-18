@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    @Transactional
+    @Transactional // 통합테스트를 통해 해당 과정이 올바르게 돌아가는지 확인 ★
     public String addProduct(ProductRequestDto productRequestDto) {
         Product product = Product.builder()
                 .productName(productRequestDto.getProductName())
@@ -33,10 +33,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
+    @Transactional // 트랜잭셔널 유무로 업데이트 상황
     public String updateProduct(Long productId, ProductUpdateRequestDto productUpdateRequestDto) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("해당 제품은 등록되지 않은 제품입니다"));
         product.update(productUpdateRequestDto);
+
         return "해당 제품의 가격이 업데이트 되었습니다";
     }
 
