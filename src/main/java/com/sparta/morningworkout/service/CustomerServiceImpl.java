@@ -4,37 +4,41 @@ package com.sparta.morningworkout.service;
 import com.sparta.morningworkout.dto.sellers.SellerListResponseDto;
 import com.sparta.morningworkout.entity.CustomerRequestList;
 import com.sparta.morningworkout.entity.Product;
-import com.sparta.morningworkout.entity.SellerRegist;
+import com.sparta.morningworkout.entity.User;
+import com.sparta.morningworkout.entity.UserRoleEnum;
 import com.sparta.morningworkout.repository.CustomerRequestListRepository;
 import com.sparta.morningworkout.repository.ProductRepository;
-import com.sparta.morningworkout.repository.SellerRegistRepository;
 import com.sparta.morningworkout.repository.UserRepository;
 import com.sparta.morningworkout.service.serviceInterface.CustomerService;
-import com.sparta.morningworkout.service.serviceInterface.ProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
-    private final SellerRegistRepository sellerRegistRepository;
+
     private final UserRepository userRepository;
-    private final ProfileService profileService;
+    //private final ProfileService profileService;
     private final CustomerRequestListRepository customerRequestListRepository;
 
     private final ProductRepository productRepository;
 
     @Override
-    public List<SellerListResponseDto> showSellerList() {
+    @Transactional(readOnly = true)
+    public Page<SellerListResponseDto> showSellerList(int page) {
+        Pageable pageable = PageRequest.of(page,10);
 
-      List<SellerRegist> sellerList = sellerRegistRepository.findAll().stream().filter(s->s.isAccept()).toList();
-      List<SellerListResponseDto> sellerListResponseDtos = sellerList.stream().map(SellerListResponseDto::new).collect(Collectors.toList());
+        Page<User> sellerList = userRepository.findAllByRoleOrderByIdDesc(UserRoleEnum.SELLER,pageable);
 
-      return sellerListResponseDtos;
+      return new PageImpl<>(sellerList.stream().map(SellerListResponseDto::new).collect(Collectors.toList()));
 
     }
 
@@ -45,7 +49,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public String requestBuyProducts(Long userId,Long productId) {
+    @Transactional
+    public String requestBuyProducts(long userId,long productId) {
 
         //시큐리티를 걸쳐 로그인 된 Customer가 구매요청을 보내는 것 이므로 User user -> user.getUserId(); 가필요할듯함.
         //여기서 자신의 상품은 자신이 판매 요청을 할 수 없게 판단하는 로직을 넣을것인가 말것인가 의논 필요
