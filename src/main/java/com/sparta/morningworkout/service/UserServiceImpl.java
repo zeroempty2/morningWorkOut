@@ -14,8 +14,6 @@ import com.sparta.morningworkout.repository.ProfileRepository;
 import com.sparta.morningworkout.repository.SellerRegistRepository;
 import com.sparta.morningworkout.repository.UserRepository;
 import com.sparta.morningworkout.service.serviceInterface.UserService;
-import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,31 +58,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logout(HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        Claims claims;
-        if (token != null) {
-            if (jwtUtil.validateToken(token)) {
-                claims = jwtUtil.getUserInfoFromToken(token);
-                String username = claims.getSubject();
-            } else { throw  new IllegalArgumentException("유효하지 않은 토큰"); }
-        } else { throw new IllegalArgumentException("토큰값이 잘못됨"); }
-
-        Long expiration = jwtUtil.getExpiration(token);
-        System.out.println(expiration);
-    }
+    public void logout(User user) {}
 
     @Override
-    public void sellerRegist(SellerRegistRequestDto sellerRegistRequestDto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        Claims claims;
-        if (token != null) {
-            if (jwtUtil.validateToken(token)) {
-                claims = jwtUtil.getUserInfoFromToken(token);
-                SellerRegist sellerRegist = new SellerRegist(Long.parseLong(claims.getId()),claims.getSubject(),
+    public void sellerRegist(SellerRegistRequestDto sellerRegistRequestDto, User user) {
+                SellerRegist sellerRegist = new SellerRegist(user.getId(), user.getUsername(),
                         sellerRegistRequestDto.getInfocontent(),sellerRegistRequestDto.getCategoryEnum());
                 sellerRegistRepository.save(sellerRegist);
-            } else { throw  new IllegalArgumentException("유효하지 않은 토큰"); }
-        } else { throw new IllegalArgumentException("토큰값이 잘못됨"); }
+
     }
 }
