@@ -33,7 +33,7 @@
 // 		// Spring User 객체의 비밀번호가 화면으로부터 입력 받은 비밀번호와 일치하는지를 검사하는 로직
 // 		User users = user.get();
 // 		List<GrantedAuthority> authorities = new ArrayList<>();
-// 		if ("admin".equals(username)) {
+// 		if (ADMIN.equals(user.get().getRole())) {
 // 			authorities.add(new SimpleGrantedAuthority(UserRoleEnum.ADMIN.getAuthority()));
 // 		} else if ("customer".equals(username)){
 // 			authorities.add(new SimpleGrantedAuthority(UserRoleEnum.CUSTOMER.getAuthority()));

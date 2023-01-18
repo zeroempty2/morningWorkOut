@@ -1,8 +1,16 @@
 package com.sparta.morningworkout.entity;
 
+import lombok.Getter;
+
 public enum CategoryEnum {
-    IT,
-    FASHION,
-    FOOD,
-    TOOLS
+    IT("it"),
+    FASHION("fashion"),
+    FOOD("food"),
+    TOOLS("tools");
+    @Getter
+    private final String value;
+
+    CategoryEnum(String value) {
+        this.value = value;
+    }
 }
