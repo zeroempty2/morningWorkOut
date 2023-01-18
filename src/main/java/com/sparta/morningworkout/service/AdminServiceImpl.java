@@ -3,9 +3,11 @@ package com.sparta.morningworkout.service;
 import com.sparta.morningworkout.dto.admin.SellerRegistResponseDto;
 import com.sparta.morningworkout.dto.StatusResponseDto;
 import com.sparta.morningworkout.dto.admin.UserListResponseDto;
+import com.sparta.morningworkout.entity.Profile;
 import com.sparta.morningworkout.entity.SellerRegist;
 import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.entity.UserRoleEnum;
+import com.sparta.morningworkout.repository.ProfileRepository;
 import com.sparta.morningworkout.repository.SellerRegistRepository;
 import com.sparta.morningworkout.repository.UserRepository;
 import com.sparta.morningworkout.service.serviceInterface.AdminService;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final SellerRegistRepository sellerRegistRepository;
+    private final ProfileRepository profileRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -51,13 +54,19 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public StatusResponseDto acceptSellerRegist(Long authorizationRequestId) {
-        long userId = sellerRegistRepository.findById(authorizationRequestId).orElseThrow(
+        SellerRegist sellerRegist = sellerRegistRepository.findById(authorizationRequestId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않습니다.")
-        ).getUserId();
+        );
+        long userId = sellerRegist.getUserId();
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않습니다.")
         );
+        Profile profile = profileRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않습니다.")
+        );
         user.changeSeller();
+        profile.authorizationProfileUpdate(sellerRegist);
+        sellerRegistRepository.deleteById(authorizationRequestId);
         return new StatusResponseDto(200,"판매자 승인이 완료되었습니다");
     }
 
@@ -71,6 +80,6 @@ public class AdminServiceImpl implements AdminService {
                 () -> new IllegalArgumentException("존재하지 않습니다.")
         );
         user.changeCustomer();
-        return new StatusResponseDto(200,"판매자 승인이 완료되었습니다");
+        return new StatusResponseDto(200,"판매자 취소가 완료되었습니다");
     }
 }
