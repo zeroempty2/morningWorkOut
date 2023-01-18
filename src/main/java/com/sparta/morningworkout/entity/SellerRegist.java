@@ -3,10 +3,12 @@ package com.sparta.morningworkout.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@SuperBuilder
 public class SellerRegist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
