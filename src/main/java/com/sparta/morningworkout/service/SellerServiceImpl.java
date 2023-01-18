@@ -10,10 +10,7 @@ import com.sparta.morningworkout.repository.CustomerRequestListRepository;
 import com.sparta.morningworkout.repository.ProductRepository;
 import com.sparta.morningworkout.service.serviceInterface.SellerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,9 +57,10 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ProductResponseDto> showMyProducts(int page,User user) {
+    public Page<ProductResponseDto> showMyProducts(int page,String sortBy,User user) {
+        Sort sort = Sort.by(sortBy);
 
-        Pageable pageable = PageRequest.of(page,10);
+        Pageable pageable = PageRequest.of(page,10,sort);
         Page<Product> products = productRepository.findAllByUserId(user.getId(),pageable);
 
        if(products==null){
