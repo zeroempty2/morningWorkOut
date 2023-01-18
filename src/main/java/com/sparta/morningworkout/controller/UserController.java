@@ -3,14 +3,16 @@ package com.sparta.morningworkout.controller;
 import com.sparta.morningworkout.dto.users.LoginUserRequestDto;
 import com.sparta.morningworkout.dto.users.SellerRegistRequestDto;
 import com.sparta.morningworkout.dto.users.SignupDto;
+import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.jwtUtil.JwtUtil;
+import com.sparta.morningworkout.security.UserDetailsImpl;
 import com.sparta.morningworkout.service.UserServiceImpl;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,13 +36,17 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public void logout(HttpServletRequest request) {
-        userServiceimpl.logout(request);
+    public ResponseEntity logout(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response) {
+        User user = userDetails.getUser();
+        response.setHeader(jwtUtil.AUTHORIZATION_HEADER, "asd");
+        userServiceimpl.logout(user);
+        return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
     }
 
     @PostMapping("/athorization")
-    public ResponseEntity athorization(@RequestBody SellerRegistRequestDto sellerRegistRequestDto, HttpServletRequest request) {
-        userServiceimpl.sellerRegist(sellerRegistRequestDto, request);
+    public ResponseEntity athorization(@RequestBody SellerRegistRequestDto sellerRegistRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        userServiceimpl.sellerRegist(sellerRegistRequestDto, user);
         return new ResponseEntity<>("등록 요청이 성공했습니다", HttpStatus.OK);
     }
 }

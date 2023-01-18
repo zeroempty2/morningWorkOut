@@ -1,4 +1,4 @@
-package com.sparta.morningworkout.securityTest;
+package com.sparta.morningworkout.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.morningworkout.dto.StatusResponseDto;

@@ -1,4 +1,4 @@
-package com.sparta.morningworkout.securityTest;
+package com.sparta.morningworkout.security;
 
 import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.repository.UserRepository;

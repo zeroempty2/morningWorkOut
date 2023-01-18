@@ -1,4 +1,4 @@
-package com.sparta.morningworkout.securityTest;
+package com.sparta.morningworkout.security;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
