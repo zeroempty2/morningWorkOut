@@ -2,8 +2,7 @@ package com.sparta.morningworkout.security;
 
 import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.entity.UserRoleEnum;
-import com.sparta.spartagroupsixproject.entity.User;
-import com.sparta.spartagroupsixproject.entity.UserRoleEnum;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
