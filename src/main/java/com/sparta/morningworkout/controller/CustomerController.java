@@ -25,11 +25,11 @@ public class CustomerController {
     @GetMapping("/sellers")
     public ResponseEntity<Page<SellerListResponseDto>> showSellerList(@RequestParam int page){
 
-        Page<SellerListResponseDto> sellerList = customerService.showSellerList(page);
+        Page<SellerListResponseDto> sellerList = customerService.showSellerList(page-1);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(sellerList);
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(sellerList);
 
     }
 

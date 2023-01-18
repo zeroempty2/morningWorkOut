@@ -26,7 +26,7 @@ public class SellerController {
 
     @GetMapping("/customers")
     public ResponseEntity<Page<CustomerListResponseDto>> showCustomerList(@RequestParam int page, User user){
-       Page<CustomerListResponseDto> customerListResponseDtoList = sellerService.showCustomerList(page,user);
+       Page<CustomerListResponseDto> customerListResponseDtoList = sellerService.showCustomerList(page-1,user);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(customerListResponseDtoList);
@@ -44,7 +44,7 @@ public class SellerController {
 
     @GetMapping("/products/list")
     public ResponseEntity<Page<ProductResponseDto>> showMyProducts(@RequestParam int page,User user){
-        Page<ProductResponseDto> products = sellerService.showMyProducts(page,user);
+        Page<ProductResponseDto> products = sellerService.showMyProducts(page-1,user);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(products);
