@@ -28,7 +28,7 @@ public class UserController {
         return new ResponseEntity<>("회원가입 성공", HttpStatus.CREATED);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginUserRequestDto loginUserRequestDto, HttpServletResponse response) {
         String generatedToken = userServiceimpl.login(loginUserRequestDto);
         response.addHeader(jwtUtil.AUTHORIZATION_HEADER, generatedToken);

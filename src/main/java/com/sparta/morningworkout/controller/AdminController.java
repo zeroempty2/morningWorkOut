@@ -16,47 +16,51 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping( "/admin")
+@RequestMapping("/admin")
 public class AdminController {
     private final AdminServiceImpl adminService;
+
     @GetMapping("/customers")
     public ResponseEntity<Page<UserListResponseDto>> showCustomerList(
             @RequestParam int page,
             @RequestParam int size) {
-        Page<UserListResponseDto> responseDto =  adminService.showCustomerList(page-1,size);
+        Page<UserListResponseDto> responseDto = adminService.showCustomerList(page - 1, size);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.ok().headers(headers).body(responseDto);
     }
+
     @GetMapping("/sellers")
     public ResponseEntity<Page<UserListResponseDto>> showSellerList(
             @RequestParam int page,
-            @RequestParam int size){
-        Page<UserListResponseDto> responseDto =  adminService.showSellerList(page-1,size);
+            @RequestParam int size) {
+        Page<UserListResponseDto> responseDto = adminService.showSellerList(page - 1, size);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.ok().headers(headers).body(responseDto);
     }
+
     @GetMapping("/authorizations")
-    public ResponseEntity<List<SellerRegistResponseDto>> showSellerRegistList(){
-        List<SellerRegistResponseDto> responseDto =  adminService.showSellerRegistList();
+    public ResponseEntity<List<SellerRegistResponseDto>> showSellerRegistList() {
+        List<SellerRegistResponseDto> responseDto = adminService.showSellerRegistList();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.ok().headers(headers).body(responseDto);
     }
+
     @PatchMapping("/authorization/accept/{authorizationRequestId}")
-    public ResponseEntity<StatusResponseDto> acceptSellerRegist(@PathVariable Long authorizationRequestId){
-        StatusResponseDto statusResponseDto =  adminService.acceptSellerRegist(authorizationRequestId);
+    public ResponseEntity<StatusResponseDto> acceptSellerRegist(@PathVariable Long authorizationRequestId) {
+        StatusResponseDto statusResponseDto = adminService.acceptSellerRegist(authorizationRequestId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.ok().headers(headers).body(statusResponseDto);
     }
+
     @PatchMapping("/authorization/delete/{authorizationRequestId}")
-    public ResponseEntity<StatusResponseDto> deleteSellerRegist(@PathVariable Long authorizationRequestId){
-        StatusResponseDto statusResponseDto =  adminService.deleteSellerRegist(authorizationRequestId);
+    public ResponseEntity<StatusResponseDto> deleteSellerRegist(@PathVariable Long authorizationRequestId) {
+        StatusResponseDto statusResponseDto = adminService.deleteSellerRegist(authorizationRequestId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.ok().headers(headers).body(statusResponseDto);
     }
 }
-
