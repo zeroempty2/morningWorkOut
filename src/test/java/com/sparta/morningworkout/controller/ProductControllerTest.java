@@ -55,7 +55,6 @@ class ProductControllerTest {
 //        List<ProductResponseDto> productResponseDtos = new ArrayList<>();
 //        given(productService.showProductList()).willReturn(productResponseDtos);
 
-
         mockMvc.perform(get("/products/list")
                         .contentType(MediaType.APPLICATION_JSON)
 //                        .content(objectMapper.writeValueAsBytes(productResponseDtos))
