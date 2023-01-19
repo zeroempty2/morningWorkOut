@@ -11,7 +11,6 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findById(Long productId);
 
-
     @Override
     void deleteById(Long productId);
 
