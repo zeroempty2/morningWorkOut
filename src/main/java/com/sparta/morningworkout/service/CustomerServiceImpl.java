@@ -1,15 +1,14 @@
 package com.sparta.morningworkout.service;
 
 
+import com.sparta.morningworkout.dto.profile.ShowSellerProfileResponseDto;
 import com.sparta.morningworkout.dto.sellers.SellerListResponseDto;
-import com.sparta.morningworkout.entity.CustomerRequestList;
-import com.sparta.morningworkout.entity.Product;
-import com.sparta.morningworkout.entity.User;
-import com.sparta.morningworkout.entity.UserRoleEnum;
+import com.sparta.morningworkout.entity.*;
 import com.sparta.morningworkout.repository.CustomerRequestListRepository;
 import com.sparta.morningworkout.repository.ProductRepository;
 import com.sparta.morningworkout.repository.UserRepository;
 import com.sparta.morningworkout.service.serviceInterface.CustomerService;
+import com.sparta.morningworkout.service.serviceInterface.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -33,20 +32,23 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<SellerListResponseDto> showSellerList(int page) {
-        Pageable pageable = PageRequest.of(page,10);
+    public Page<SellerListResponseDto> showSellerList(int page,int size) {
+        Pageable pageable = PageRequest.of(page,size);
 
         Page<User> sellerList = userRepository.findAllByRoleOrderByIdDesc(UserRoleEnum.SELLER,pageable);
 
-      return new PageImpl<>(sellerList.stream().map(SellerListResponseDto::new).collect(Collectors.toList()));
+
+      return sellerList.map(SellerListResponseDto::new);
 
     }
 
-    @Override
-    public void showSellerProfile() {
-
-        //프로필 인터페이스가 구현되고, 그 서비스 딴 로직을 호출해야 되지 않나 싶다.
-    }
+//    @Override
+//    public ShowSellerProfileResponseDto showSellerProfile(long sellerId) {
+//
+//          return profileService.showSellerProfile(sellerId);
+//
+//
+//    }
 
     @Override
     @Transactional

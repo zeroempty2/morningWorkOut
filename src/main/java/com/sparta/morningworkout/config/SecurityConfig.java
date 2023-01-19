@@ -59,6 +59,8 @@ public class SecurityConfig {
                 .requestMatchers("/products/seller/**").hasAnyRole("SELLER")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                 .requestMatchers("/sellers/**").hasAnyRole("SELLER")
+                .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                .requestMatchers("/sellers/**").hasAnyRole("SELLER") // Enum형태로 넣으면 인식 못함!
                 .requestMatchers("/products/list").permitAll()
                 .requestMatchers("/products/list/seller/**").permitAll()
                 .anyRequest().authenticated()
