@@ -10,10 +10,12 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@SuperBuilder
 public class Profile {
     @Id
     private long id;
