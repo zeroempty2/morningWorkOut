@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort;
 import java.util.List;
 
 public interface SellerService {
-    Page<CustomerListResponseDto> showCustomerList(int page,User user);
+    Page<CustomerListResponseDto> showCustomerList(int page,int size,User user);
     String acceptBuyRequest(long customerId);
-    Page<ProductResponseDto> showMyProducts(int page, String sortBy,User user);
+    Page<ProductResponseDto> showMyProducts(int page,int size,User user);
 }

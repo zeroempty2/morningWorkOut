@@ -4,6 +4,7 @@ import com.sparta.morningworkout.dto.StatusResponseDto;
 import com.sparta.morningworkout.dto.customer.CustomerListResponseDto;
 import com.sparta.morningworkout.dto.product.ProductResponseDto;
 import com.sparta.morningworkout.entity.User;
+import com.sparta.morningworkout.security.UserDetailsImpl;
 import com.sparta.morningworkout.service.SellerServiceImpl;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
@@ -25,8 +27,8 @@ public class SellerController {
     private final SellerServiceImpl sellerService;
 
     @GetMapping("/customers")
-    public ResponseEntity<Page<CustomerListResponseDto>> showCustomerList(@RequestParam int page, User user){
-       Page<CustomerListResponseDto> customerListResponseDtoList = sellerService.showCustomerList(page-1,user);
+    public ResponseEntity<Page<CustomerListResponseDto>> showCustomerList(@RequestParam int page,@RequestParam int size, @AuthenticationPrincipal UserDetailsImpl userDetails){
+       Page<CustomerListResponseDto> customerListResponseDtoList = sellerService.showCustomerList(page-1,size,userDetails.getUser());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(customerListResponseDtoList);
@@ -43,8 +45,8 @@ public class SellerController {
     }
 
     @GetMapping("/products/list")
-    public ResponseEntity<Page<ProductResponseDto>> showMyProducts(@RequestParam int page,@RequestParam String sortBy ,User user){
-        Page<ProductResponseDto> products = sellerService.showMyProducts(page-1,sortBy,user);
+    public ResponseEntity<Page<ProductResponseDto>> showMyProducts(@RequestParam int page,@RequestParam int size ,@AuthenticationPrincipal UserDetailsImpl userDetails){
+        Page<ProductResponseDto> products = sellerService.showMyProducts(page-1,size,userDetails.getUser());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(products);

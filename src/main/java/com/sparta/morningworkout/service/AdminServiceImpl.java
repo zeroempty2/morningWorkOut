@@ -32,7 +32,7 @@ public class AdminServiceImpl implements AdminService {
     public Page<UserListResponseDto> showCustomerList(int page,int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> customers = userRepository.findAllByRoleOrderByIdDesc(UserRoleEnum.CUSTOMER,pageable);
-        return new PageImpl<>(customers.stream().map(UserListResponseDto::new).collect(Collectors.toList()));
+        return customers.map(UserListResponseDto::new);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class AdminServiceImpl implements AdminService {
     public Page<UserListResponseDto> showSellerList(int page,int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> sellers = userRepository.findAllByRoleOrderByIdDesc(UserRoleEnum.SELLER,pageable);
-        return new PageImpl<>(sellers.stream().map(UserListResponseDto::new).collect(Collectors.toList()));
+        return sellers.map(UserListResponseDto::new);
     }
 
     @Override

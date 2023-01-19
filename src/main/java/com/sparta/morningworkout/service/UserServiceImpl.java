@@ -15,6 +15,7 @@ import com.sparta.morningworkout.repository.SellerRegistRepository;
 import com.sparta.morningworkout.repository.UserRepository;
 import com.sparta.morningworkout.service.serviceInterface.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +29,16 @@ public class UserServiceImpl implements UserService {
     private final JwtUtil jwtUtil;
     private final ProfileRepository profileRepository;
     private static final String ADMIN_TOKEN = "asdasd";
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
     public void signup(SignupDto sign) {
         Optional<User> users = userRepository.findByUsername(sign.getUsername());
         if (users.isPresent()) { throw new IllegalArgumentException("유저가 존재합니다"); }
+        String username = sign.getUsername();
+        String password = passwordEncoder.encode(sign.getPassword());
+
 
         UserRoleEnum role = UserRoleEnum.CUSTOMER;
         if (sign.isAdmin()) {
@@ -42,7 +47,7 @@ public class UserServiceImpl implements UserService {
             }
             role = UserRoleEnum.ADMIN;
         }
-        User user = new User(sign.getUsername(), sign.getPassword(),role);
+        User user = new User(username, password, role);
         userRepository.save(user);
         Profile profile = new Profile(user.getId(),sign.getNickname());
         profileRepository.save(profile);
@@ -52,7 +57,7 @@ public class UserServiceImpl implements UserService {
     public String login(LoginUserRequestDto loginUserRequestDto) {
         User user = userRepository.findByUsername(loginUserRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다"));
-        if (!user.getPassword().equals(loginUserRequestDto.getPassword()))
+        if (!passwordEncoder.matches(user.getPassword(), loginUserRequestDto.getPassword()))
         { throw new IllegalArgumentException("비밀번호 불일치"); }
         return jwtUtil.createToken(user.getUsername(), user.getRole());
     }

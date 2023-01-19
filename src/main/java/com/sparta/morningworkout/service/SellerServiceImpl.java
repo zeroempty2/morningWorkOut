@@ -26,16 +26,18 @@ public class SellerServiceImpl implements SellerService {
     private final ProductRepository productRepository;
     @Override
     @Transactional(readOnly = true)
-    public Page<CustomerListResponseDto> showCustomerList(int page,User user) {
+    public Page<CustomerListResponseDto> showCustomerList(int page,int size, User user) {
 
-        Pageable pageable = PageRequest.of(page,10);
+        Pageable pageable = PageRequest.of(page,size);
         Page<CustomerRequestList> customerList = customerRequestListRepository.findAllBySellerId(user.getId(),pageable);
 
         if(customerList==null){
             throw new IllegalArgumentException("판매요청한 구매자가 없습니다!");
         }
 
-        return new PageImpl<>(customerList.stream().map(CustomerListResponseDto::new).collect(Collectors.toList()));
+        return customerList.map(CustomerListResponseDto::new);
+
+       // return new PageImpl<>(customerList.stream().map(CustomerListResponseDto::new).collect(Collectors.toList()));
 
 
     }
@@ -57,16 +59,17 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ProductResponseDto> showMyProducts(int page,String sortBy,User user) {
-        Sort sort = Sort.by(sortBy);
+    public Page<ProductResponseDto> showMyProducts(int page,int size,User user) {
+       //Sort sort = Sort.by(Sort.Direction.ASC ,"price");
 
-        Pageable pageable = PageRequest.of(page,10,sort);
+        Pageable pageable = PageRequest.of(page,size);
         Page<Product> products = productRepository.findAllByUserId(user.getId(),pageable);
 
        if(products==null){
            throw new IllegalArgumentException("내 판매상품 내역이 없습니다!");
 
        }
-       return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()));
+       return products.map(ProductResponseDto::new);
+       //return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()),pageable,products.getTotalPages());
     }
 }
