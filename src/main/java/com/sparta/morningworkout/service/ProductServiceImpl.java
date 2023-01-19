@@ -67,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
 
         Page<Product> products = productRepository.findAll(pageable);
 
-        return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()));
+        return products.map(ProductResponseDto::new);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductResponseDto> showProductBySeller(Long sellerId, PageDto pageDto) {
         Pageable pageable = makePage(pageDto);
         Page<Product> products = productRepository.findAllByUserId(sellerId, pageable);
-        return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()));
+        return products.map(ProductResponseDto::new);
     }
 
     // Pageable 생성 메서드
