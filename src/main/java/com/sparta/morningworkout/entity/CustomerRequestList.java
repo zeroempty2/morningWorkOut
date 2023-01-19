@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-public class CustomerRequestList {
+public class CustomerRequestList extends TimeStamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
