@@ -5,11 +5,7 @@ import java.util.Objects;
 import com.sparta.morningworkout.dto.profile.UpdateCustomerProfileRequestDto;
 import com.sparta.morningworkout.dto.profile.UpdateSellerProfileRequestDto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -31,6 +27,9 @@ public class Profile {
 	@Column
 	@Enumerated(EnumType.STRING)
 	private CategoryEnum category;
+
+	@OneToOne
+	private User user;
 
 	public Profile(Long id, String nickname) {
 		this.id = id;

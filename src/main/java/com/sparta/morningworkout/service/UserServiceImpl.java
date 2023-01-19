@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     public String login(LoginUserRequestDto loginUserRequestDto) {
         User user = userRepository.findByUsername(loginUserRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다"));
-        if (!passwordEncoder.matches(user.getPassword(), loginUserRequestDto.getPassword()))
+        if (!passwordEncoder.matches(loginUserRequestDto.getPassword(),user.getPassword()))
         { throw new IllegalArgumentException("비밀번호 불일치"); }
         return jwtUtil.createToken(user.getUsername(), user.getRole());
     }
