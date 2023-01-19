@@ -26,14 +26,14 @@ public class ProfileController {
 	private final ProfileServiceImpl profileService;
 
 	@GetMapping("/customer/{id}")
-	public ResponseEntity<ShowCustomerProfileResponseDto> showCustomerProfile(@PathVariable Long id) {
-		ShowCustomerProfileResponseDto showCustomerProfile = profileService.showCustomerProfile(id);
+	public ResponseEntity<ShowCustomerProfileResponseDto> showCustomerProfile(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+		ShowCustomerProfileResponseDto showCustomerProfile = profileService.showCustomerProfile(id, userDetails.getUsername());
 		return ResponseEntity.status(HttpStatus.OK).body(showCustomerProfile);
 	}
 
 	@GetMapping("/seller/{id}")
-	public ResponseEntity<ShowSellerProfileResponseDto> showSellerProfile(@PathVariable Long id) {
-		ShowSellerProfileResponseDto showSellerProfileList = profileService.showSellerProfile(id);
+	public ResponseEntity<ShowSellerProfileResponseDto> showSellerProfile(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+		ShowSellerProfileResponseDto showSellerProfileList = profileService.showSellerProfile(id, userDetails.getUsername());
 		return ResponseEntity.status(HttpStatus.OK).body(showSellerProfileList);
 	}
 
@@ -46,8 +46,8 @@ public class ProfileController {
 
 	@PutMapping("/seller/{id}")
 	public ResponseEntity<String> updateSellerProfile(@PathVariable long id,
-		@RequestBody UpdateSellerProfileRequestDto request) {
-		profileService.updateSellerProfile(id, request);
+		@RequestBody UpdateSellerProfileRequestDto request, @AuthenticationPrincipal UserDetails userDetails) {
+		profileService.updateSellerProfile(id, request, userDetails.getUsername());
 		return new ResponseEntity<>("프로필 수정이 완료되었습니다.", HttpStatus.OK);
 	}
 }
