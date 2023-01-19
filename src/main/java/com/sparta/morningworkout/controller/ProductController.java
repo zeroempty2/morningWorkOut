@@ -38,28 +38,30 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(productResponseDtos);
     }
 
-    @PostMapping
+    @GetMapping("/list/seller/{sellerId}")
+    public ResponseEntity showProductBySeller(@PathVariable Long sellerId, @RequestBody PageDto pageDto) {
+        Page<ProductResponseDto> productResponseDtos = productService.showProductBySeller(sellerId, pageDto);
+        return ResponseEntity.status(HttpStatus.OK).body(productResponseDtos);
+    }
+
+    @PostMapping("/seller")
     public ResponseEntity addProduct(@RequestBody ProductRequestDto productRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         String msg = productService.addProduct(productRequestDto, userDetails.getUser());
         return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponseDto(HttpStatus.CREATED.value(), msg));
     }
 
-    @PatchMapping("/{productId}")
+    @PatchMapping("/seller/{productId}")
     public ResponseEntity updateProduct(@PathVariable Long productId, @RequestBody ProductUpdateRequestDto productUpdateRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String msg = productService.updateProduct(productId, productUpdateRequestDto,userDetails.getUser());
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDto(HttpStatus.OK.value(), msg));
     }
 
-    @DeleteMapping("/{productId}")
+    @DeleteMapping("/seller/{productId}")
     public ResponseEntity deleteProduct(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String msg = productService.deleteProduct(productId,userDetails.getUser());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new StatusResponseDto(HttpStatus.NO_CONTENT.value(), msg));
     }
 
-    @GetMapping("/list/seller/{sellerId}")
-    public ResponseEntity showProductBySeller(@PathVariable Long sellerId, @RequestBody PageDto pageDto) {
-        Page<ProductResponseDto> productResponseDtos = productService.showProductBySeller(sellerId, pageDto);
-        return ResponseEntity.status(HttpStatus.OK).body(productResponseDtos);
-    }
+
 }
