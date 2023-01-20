@@ -1,5 +1,6 @@
 package com.sparta.morningworkout.service.serviceInterface;
 
+import com.sparta.morningworkout.dto.Point.PointUpdateRequestDto;
 import com.sparta.morningworkout.dto.admin.UserContentsResponseDto;
 import com.sparta.morningworkout.dto.admin.SellerRegistResponseDto;
 import com.sparta.morningworkout.dto.StatusResponseDto;
@@ -15,4 +16,5 @@ public interface AdminService {
     StatusResponseDto acceptSellerRegist(Long authorizationRequestId);
     StatusResponseDto deleteSellerRegist(Long authorizationRequestId);
     Page<UserContentsResponseDto>showSellerListBySearchingNickname(int page, int size, String keyword);
+    StatusResponseDto givePoint(Long userId, PointUpdateRequestDto pointUpdateDto);
 }

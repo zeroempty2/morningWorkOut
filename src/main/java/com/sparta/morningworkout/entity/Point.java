@@ -1,26 +1,31 @@
 package com.sparta.morningworkout.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Entity
 @NoArgsConstructor
-public class Point {
+@SuperBuilder
+public class Point extends TimeStamped{
 
     @Id
     @Column(nullable = false)
-    private String username;
+    private long userId;
     @Column(nullable = false)
-    private int Point;
-    private String adminname;
+    private int point;
 
-    @Builder
-    public Point(String username, int point, String adminname) {
-        this.username = username;
-        Point = point;
-        this.adminname = adminname;
+
+    public Point(Long userId, int point) {
+        this.userId = userId;
+        this.point = point;
+    }
+    public void plusPoint(int point){
+        this.point += point;
+    }
+    public void minusPoint(int point){
+        this.point -= point;
     }
 }

@@ -1,9 +1,11 @@
 package com.sparta.morningworkout.service;
 
+import com.sparta.morningworkout.dto.Point.PointUpdateRequestDto;
 import com.sparta.morningworkout.dto.admin.UserContentsResponseDto;
 import com.sparta.morningworkout.dto.admin.SellerRegistResponseDto;
 import com.sparta.morningworkout.dto.StatusResponseDto;
 import com.sparta.morningworkout.entity.*;
+import com.sparta.morningworkout.repository.PointRepository;
 import com.sparta.morningworkout.repository.ProfileRepository;
 import com.sparta.morningworkout.repository.SellerRegistRepository;
 import com.sparta.morningworkout.repository.UserRepository;
@@ -23,6 +25,7 @@ public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final SellerRegistRepository sellerRegistRepository;
     private final ProfileRepository profileRepository;
+    private final PointRepository pointRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -86,4 +89,13 @@ public class AdminServiceImpl implements AdminService {
         user.changeCustomer();
         return new StatusResponseDto(200,"판매자 취소가 완료되었습니다");
     }
+
+    public StatusResponseDto givePoint(Long userId, PointUpdateRequestDto pointUpdateDto) {
+        Point point = pointRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("찾는 유저가 없습니다.")
+        );
+        point.plusPoint(pointUpdateDto.getPoint());
+        return new StatusResponseDto(200,"판매자 취소가 완료되었습니다");
+    }
+
 }

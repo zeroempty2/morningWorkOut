@@ -4,9 +4,11 @@ import com.sparta.morningworkout.dto.search.CustomerListBySellerDto;
 import com.sparta.morningworkout.dto.customer.CustomerListResponseDto;
 import com.sparta.morningworkout.dto.product.ProductResponseDto;
 import com.sparta.morningworkout.entity.CustomerRequestList;
+import com.sparta.morningworkout.entity.Point;
 import com.sparta.morningworkout.entity.Product;
 import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.repository.CustomerRequestListRepository;
+import com.sparta.morningworkout.repository.PointRepository;
 import com.sparta.morningworkout.repository.ProductRepository;
 import com.sparta.morningworkout.service.serviceInterface.SellerService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class SellerServiceImpl implements SellerService {
 
     private final CustomerRequestListRepository customerRequestListRepository;
     private final ProductRepository productRepository;
+    private final PointRepository pointRepository;
     @Override
     @Transactional(readOnly = true)
     public Page<CustomerListResponseDto> showCustomerList(int page,int size, User user) {
@@ -52,8 +55,21 @@ public class SellerServiceImpl implements SellerService {
             throw new IllegalArgumentException("해당 사용자의 판매요청이 없습니다!");
         }
         customerRequestList.acceptBySeller();
+        if(customerRequestList.isUsePoint()){
+            Point customerPoint = pointRepository.findById(customerRequestList.getUserId()).orElseThrow(
+                    () -> new IllegalArgumentException("유저의 정보가 잘못되었습니다")
+            );
+            Point sellerPoint = pointRepository.findById(customerRequestList.getSellerId()).orElseThrow(
+                    () -> new IllegalArgumentException("판매자 정보가 잘못되었습니다")
+            );
+            int productPoint = productRepository.findById(customerRequestList.getProductId()).orElseThrow(
+                    () -> new IllegalArgumentException("상품 정보가 잘못되었습니다")
+            ).getPoint();
+            customerPoint.minusPoint(productPoint);
+            sellerPoint.plusPoint(productPoint);
+            return "해당 사용자의 판매요청이 수락되었습니다!";
+        }
         return "해당 사용자의 판매요청이 수락되었습니다!";
-
     }
 
     @Override
@@ -74,13 +90,11 @@ public class SellerServiceImpl implements SellerService {
 
     public Page<CustomerListBySellerDto> searchByCustomerName(int page, int size, String keyword,User user) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<CustomerListBySellerDto> customerListResponseDtos = customerRequestListRepository.findAllByCustomerName(user.getId(),keyword,pageable);
-        return customerListResponseDtos;
+        return customerRequestListRepository.findAllByCustomerName(user.getId(),keyword,pageable);
     }
 
     public Page<ProductResponseDto> searchMyProductsByKeyword(int page, int size,String keyword, User user) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<ProductResponseDto> productResponseDtos = productRepository.findAllBySellerIdByProductName(keyword,user.getId(),pageable);
-        return productResponseDtos;
+        return productRepository.findAllBySellerIdByProductName(keyword,user.getId(),pageable);
     }
 }

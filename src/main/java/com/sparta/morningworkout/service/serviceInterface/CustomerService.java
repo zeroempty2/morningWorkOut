@@ -12,4 +12,5 @@ public interface CustomerService {
    // ShowSellerProfileResponseDto showSellerProfile(long sellerId);
     String requestBuyProducts(long userId,long sellerId);
     Page<UserContentsResponseDto> searchSellerListBySellerNickname(int page, int size, String nickName);
+    String requestBuyProductsByPoint(long userId, long productId);
 }

@@ -1,5 +1,6 @@
 package com.sparta.morningworkout.controller;
 
+import com.sparta.morningworkout.dto.Point.PointUpdateRequestDto;
 import com.sparta.morningworkout.dto.admin.UserContentsResponseDto;
 import com.sparta.morningworkout.dto.admin.SellerRegistResponseDto;
 import com.sparta.morningworkout.dto.StatusResponseDto;
@@ -81,6 +82,13 @@ public class AdminController {
     @PatchMapping("/authorization/delete/{authorizationRequestId}")
     public ResponseEntity<StatusResponseDto> deleteSellerRegist(@PathVariable Long authorizationRequestId) {
         StatusResponseDto statusResponseDto = adminService.deleteSellerRegist(authorizationRequestId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        return ResponseEntity.ok().headers(headers).body(statusResponseDto);
+    }
+    @PostMapping("/point/{userId}")
+    public ResponseEntity<StatusResponseDto> givePoint(@PathVariable Long userId, PointUpdateRequestDto pointUpdateRequestDto) {
+        StatusResponseDto statusResponseDto = adminService.givePoint(userId,pointUpdateRequestDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.ok().headers(headers).body(statusResponseDto);

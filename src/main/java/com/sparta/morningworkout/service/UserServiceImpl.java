@@ -17,11 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Optional;
-import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
+
 
 @RequiredArgsConstructor
 @Service
@@ -58,7 +56,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         Profile profile = new Profile(user.getId(),sign.getNickname());
         profileRepository.save(profile);
-        Point point = new Point(user.getUsername(), 1000, null);
+        Point point = new Point(user.getId(),1000);
         pointRepository.save(point);
     }
 

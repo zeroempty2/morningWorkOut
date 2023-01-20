@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping( "/users")
 public class UserController {
     private final UserServiceImpl userServiceimpl;
-    private final JwtUtil jwtUtil;
-
     @PostMapping("/sign")
     public ResponseEntity createUser(@RequestBody @Valid SignupDto sign) {
         userServiceimpl.signup(sign);
@@ -31,14 +29,14 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginUserRequestDto loginUserRequestDto, HttpServletResponse response) {
         String generatedToken = userServiceimpl.login(loginUserRequestDto);
-        response.addHeader(jwtUtil.AUTHORIZATION_HEADER, generatedToken);
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, generatedToken);
         return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     public ResponseEntity logout(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response) {
         User user = userDetails.getUser();
-        response.setHeader(jwtUtil.AUTHORIZATION_HEADER, "");
+        response.setHeader(JwtUtil.AUTHORIZATION_HEADER, null);
         userServiceimpl.logout(user);
         return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
     }

@@ -33,21 +33,21 @@ public class TestDataRunner implements ApplicationRunner {
 
         User testSellerUser = new User("Seller", passwordEncoder.encode("sellerpassword1"), UserRoleEnum.SELLER);
         userRepository.save(testSellerUser);
-        Point testSeller = new Point("Seller1", 1000, null);
+        Point testSeller = new Point(testSellerUser.getId(), 1000);
         pointRepository.save(testSeller);
         Profile testSellerProfile = Profile.builder().id(testSellerUser.getId()).nickname("테스트판매자").category(CategoryEnum.IT).infoContent("testSeller").build();
         profileRepository.save(testSellerProfile);
 
         User testCustomerUser = new User("Customer", passwordEncoder.encode("sellerpassword1"), UserRoleEnum.CUSTOMER);
         userRepository.save(testCustomerUser);
-        Point testCustomer = new Point("Customer", 55000, null);
+        Point testCustomer = new Point(testCustomerUser.getId(), 55000);
         pointRepository.save(testCustomer);
         Profile testCustomerProfile = Profile.builder().id(testCustomerUser.getId()).nickname("테스트유저").build();
         profileRepository.save(testCustomerProfile);
 
         User testCustomerUser2 = new User("Customer2", passwordEncoder.encode("sellerpassword1"), UserRoleEnum.CUSTOMER);
         userRepository.save(testCustomerUser2);
-        Point testCustomer2 = new Point("Customer2", 30000, null);
+        Point testCustomer2 = new Point(testCustomerUser2.getId(), 30000);
         pointRepository.save(testCustomer2);
         Profile testCustomerProfile2 = Profile.builder().id(testCustomerUser2.getId()).nickname("테스트유저2").build();
         profileRepository.save(testCustomerProfile2);
