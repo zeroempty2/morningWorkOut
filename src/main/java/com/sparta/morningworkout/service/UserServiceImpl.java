@@ -50,8 +50,7 @@ public class UserServiceImpl implements UserService {
         User user = new User(username, password, role);
         userRepository.save(user);
         Profile profile = new Profile(user.getId(),sign.getNickname());
-        profileRepository.saveAndFlush(profile);
-        user.setProfile(profile);
+        profileRepository.save(profile);
     }
 
     @Override

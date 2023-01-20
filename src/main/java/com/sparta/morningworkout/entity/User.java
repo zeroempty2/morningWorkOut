@@ -20,9 +20,6 @@ public class User extends TimeStamped{
     @Column
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
 
     public void changeSeller(){
         this.role = UserRoleEnum.SELLER;
@@ -37,9 +34,6 @@ public class User extends TimeStamped{
         this.role = role;
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
     public boolean checkUser(Long userId){
         return userId.equals(id);
     }

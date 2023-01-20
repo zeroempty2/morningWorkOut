@@ -1,9 +1,8 @@
 package com.sparta.morningworkout.service;
 
-import com.sparta.morningworkout.dto.admin.SearchNicknameResponseDto;
+import com.sparta.morningworkout.dto.admin.UserContentsResponseDto;
 import com.sparta.morningworkout.dto.admin.SellerRegistResponseDto;
 import com.sparta.morningworkout.dto.StatusResponseDto;
-import com.sparta.morningworkout.dto.admin.UserListResponseDto;
 import com.sparta.morningworkout.entity.*;
 import com.sparta.morningworkout.repository.ProfileRepository;
 import com.sparta.morningworkout.repository.SellerRegistRepository;
@@ -27,29 +26,27 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<UserListResponseDto> showCustomerList(int page,int size) {
+    public Page<UserContentsResponseDto> showCustomerList(int page,int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<User> customers = userRepository.findAllByRoleOrderByIdDesc(UserRoleEnum.CUSTOMER,pageable);
-        return customers.map(UserListResponseDto::new);
+        return userRepository.findAllByRoleOrderByIdDescQuery(UserRoleEnum.CUSTOMER,pageable);
     }
 
     @Override
-    public Page<SearchNicknameResponseDto> showCustomerListBySearchingNickname(int page, int size, String keyword) {
+    public Page<UserContentsResponseDto> showCustomerListBySearchingNickname(int page, int size, String keyword) {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findCustomersByProfileNicknameKeyword(pageable,keyword);
     }
     @Override
-    public Page<SearchNicknameResponseDto> showSellerListBySearchingNickname(int page, int size, String keyword) {
+    public Page<UserContentsResponseDto> showSellerListBySearchingNickname(int page, int size, String keyword) {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findSellersByProfileNicknameKeyword(pageable,keyword);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<UserListResponseDto> showSellerList(int page,int size) {
+    public Page<UserContentsResponseDto> showSellerList(int page,int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<User> sellers = userRepository.findAllByRoleOrderByIdDesc(UserRoleEnum.SELLER,pageable);
-        return sellers.map(UserListResponseDto::new);
+        return userRepository.findAllByRoleOrderByIdDescQuery(UserRoleEnum.SELLER,pageable);
     }
 
     @Override

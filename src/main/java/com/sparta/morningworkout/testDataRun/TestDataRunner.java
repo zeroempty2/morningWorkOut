@@ -28,13 +28,11 @@ public class TestDataRunner implements ApplicationRunner {
         User testAdminUser = new User("관리자", passwordEncoder.encode("비밀번호"), UserRoleEnum.ADMIN);
         userRepository.save(testAdminUser);
         Profile testAdminProfile = new Profile(testAdminUser.getId(),"관리자");
-        profileRepository.saveAndFlush(testAdminProfile);
-        testAdminUser.setProfile(testAdminProfile);
+        profileRepository.save(testAdminProfile);
         User testSellerUser = new User("Seller", passwordEncoder.encode("sellerpassword1"), UserRoleEnum.SELLER);
         userRepository.save(testSellerUser);
         Profile testSellerProfile = Profile.builder().nickname("테스트판매자").category(CategoryEnum.IT).infoContent("testSeller").id(testSellerUser.getId()).build();
-        profileRepository.saveAndFlush(testSellerProfile);
-        testSellerUser.setProfile(testSellerProfile);
+        profileRepository.save(testSellerProfile);
 
         List<ProductRequestDto> productRequestDtoList = new ArrayList<>();
 
