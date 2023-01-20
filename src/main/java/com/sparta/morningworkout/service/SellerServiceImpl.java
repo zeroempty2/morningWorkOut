@@ -1,8 +1,8 @@
 package com.sparta.morningworkout.service;
 
+import com.sparta.morningworkout.dto.search.CustomerListBySellerDto;
 import com.sparta.morningworkout.dto.customer.CustomerListResponseDto;
 import com.sparta.morningworkout.dto.product.ProductResponseDto;
-import com.sparta.morningworkout.dto.sellers.SellerListResponseDto;
 import com.sparta.morningworkout.entity.CustomerRequestList;
 import com.sparta.morningworkout.entity.Product;
 import com.sparta.morningworkout.entity.User;
@@ -10,12 +10,11 @@ import com.sparta.morningworkout.repository.CustomerRequestListRepository;
 import com.sparta.morningworkout.repository.ProductRepository;
 import com.sparta.morningworkout.service.serviceInterface.SellerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -71,5 +70,17 @@ public class SellerServiceImpl implements SellerService {
        }
        return products.map(ProductResponseDto::new);
        //return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()),pageable,products.getTotalPages());
+    }
+
+    public Page<CustomerListBySellerDto> searchByCustomerName(int page, int size, String keyword,User user) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<CustomerListBySellerDto> customerListResponseDtos = customerRequestListRepository.findAllByCustomerName(user.getId(),keyword,pageable);
+        return customerListResponseDtos;
+    }
+
+    public Page<ProductResponseDto> searchMyProductsByKeyword(int page, int size,String keyword, User user) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<ProductResponseDto> productResponseDtos = productRepository.findAllBySellerIdByProductName(keyword,user.getId(),pageable);
+        return productResponseDtos;
     }
 }

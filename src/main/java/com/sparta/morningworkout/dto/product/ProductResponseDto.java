@@ -9,14 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class ProductResponseDto {
 
     private String productName;
     private int price;
-
     private CategoryEnum categoryEnum;
     public ProductResponseDto(Product product) {
         this.productName = product.getProductName();
@@ -24,4 +23,6 @@ public class ProductResponseDto {
         this.categoryEnum = product.getCategory();
 
     }
+
+
 }

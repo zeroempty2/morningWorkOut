@@ -41,6 +41,23 @@ public class TestDataRunner implements ApplicationRunner {
         Profile testSellerProfile = Profile.builder().id(testSellerUser.getId()).nickname("테스트판매자").category(CategoryEnum.IT).infoContent("testSeller").build();
         profileRepository.save(testSellerProfile);
 
+        User testCustomerUser = new User("Customer", passwordEncoder.encode("sellerpassword1"), UserRoleEnum.CUSTOMER);
+        userRepository.save(testCustomerUser);
+        Point testCustomer = new Point("Customer", 55000, null);
+        pointRepository.save(testCustomer);
+        Profile testCustomerProfile = Profile.builder().id(testCustomerUser.getId()).nickname("테스트유저").build();
+        profileRepository.save(testCustomerProfile);
+
+        User testCustomerUser2 = new User("Customer2", passwordEncoder.encode("sellerpassword1"), UserRoleEnum.CUSTOMER);
+        userRepository.save(testCustomerUser2);
+        Point testCustomer2 = new Point("Customer2", 30000, null);
+        pointRepository.save(testCustomer2);
+        Profile testCustomerProfile2 = Profile.builder().id(testCustomerUser2.getId()).nickname("테스트유저2").build();
+        profileRepository.save(testCustomerProfile2);
+
+        CustomerRequestList customerRequestList1 = CustomerRequestList.builder().userId(testCustomerUser.getId()).sellerId(testSellerUser.getId()).productId(1L).build();
+        CustomerRequestList customerRequestList2 = CustomerRequestList.builder().userId(testCustomerUser2.getId()).sellerId(testSellerUser.getId()).productId(1L).build();
+
         List<ProductRequestDto> productRequestDtoList = new ArrayList<>();
 
         productRequestDtoList.add(new ProductRequestDto("맥북프로",5000000, CategoryEnum.IT));
@@ -55,21 +72,35 @@ public class TestDataRunner implements ApplicationRunner {
 
         productRequestDtoList.add(new ProductRequestDto("과자",3000, CategoryEnum.FOOD));
         productRequestDtoList.add(new ProductRequestDto("김치",20000, CategoryEnum.FOOD));
-        productRequestDtoList.add(new ProductRequestDto("삼겹살",20000, CategoryEnum.FOOD));
+        productRequestDtoList.add(new ProductRequestDto("삼겹살 1Kg",20000, CategoryEnum.FOOD));
         productRequestDtoList.add(new ProductRequestDto("김",3000, CategoryEnum.FOOD));
         productRequestDtoList.add(new ProductRequestDto("참치",3500, CategoryEnum.FOOD));
+        productRequestDtoList.add(new ProductRequestDto("고추참치",5000, CategoryEnum.FOOD));
+        productRequestDtoList.add(new ProductRequestDto("고구마 1Kg",10000, CategoryEnum.FOOD));
+        productRequestDtoList.add(new ProductRequestDto("우유 1L",5000, CategoryEnum.FOOD));
+        productRequestDtoList.add(new ProductRequestDto("계란",4000, CategoryEnum.FOOD));
+        productRequestDtoList.add(new ProductRequestDto("등심 1Kg",15500, CategoryEnum.FOOD));
 
-        productRequestDtoList.add(new ProductRequestDto("셔츠",50000, CategoryEnum.FASHION));
+        productRequestDtoList.add(new ProductRequestDto("셔츠(흰색)",50000, CategoryEnum.FASHION));
         productRequestDtoList.add(new ProductRequestDto("자켓",250000, CategoryEnum.FASHION));
-        productRequestDtoList.add(new ProductRequestDto("패딩",200000, CategoryEnum.FASHION));
+        productRequestDtoList.add(new ProductRequestDto("롱패딩",200000, CategoryEnum.FASHION));
         productRequestDtoList.add(new ProductRequestDto("바지",70000, CategoryEnum.FASHION));
         productRequestDtoList.add(new ProductRequestDto("넥타이",150000, CategoryEnum.FASHION));
+        productRequestDtoList.add(new ProductRequestDto("블라우스(흰색)",50000, CategoryEnum.FASHION));
+        productRequestDtoList.add(new ProductRequestDto("신발",250000, CategoryEnum.FASHION));
+        productRequestDtoList.add(new ProductRequestDto("숏패딩",200000, CategoryEnum.FASHION));
+        productRequestDtoList.add(new ProductRequestDto("레깅스",70000, CategoryEnum.FASHION));
+        productRequestDtoList.add(new ProductRequestDto("드레스",150000, CategoryEnum.FASHION));
 
         productRequestDtoList.add(new ProductRequestDto("망치",10000, CategoryEnum.TOOLS));
         productRequestDtoList.add(new ProductRequestDto("드라이버",5000, CategoryEnum.TOOLS));
         productRequestDtoList.add(new ProductRequestDto("전동드릴",100000, CategoryEnum.TOOLS));
         productRequestDtoList.add(new ProductRequestDto("니퍼",15000, CategoryEnum.TOOLS));
         productRequestDtoList.add(new ProductRequestDto("그라인더",60000, CategoryEnum.TOOLS));
+        productRequestDtoList.add(new ProductRequestDto("전동망치",30000, CategoryEnum.TOOLS));
+        productRequestDtoList.add(new ProductRequestDto("전동드라이버",55000, CategoryEnum.TOOLS));
+        productRequestDtoList.add(new ProductRequestDto("인두기",100000, CategoryEnum.TOOLS));
+        productRequestDtoList.add(new ProductRequestDto("니퍼(중)",15000, CategoryEnum.TOOLS));
 
         createProducts(testSellerUser,productRequestDtoList);
     }

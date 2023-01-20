@@ -9,9 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
+import java.util.List;
+
 public interface UserService {
     void signup(SignupDto signupDto);
     String login(LoginUserRequestDto loginUserRequestDto);
     void logout(User user);
     void sellerRegist(SellerRegistRequestDto sellerRegistRequestDto, User user);
+
+//    List<Long> getUserIdByName(String username);
 }
