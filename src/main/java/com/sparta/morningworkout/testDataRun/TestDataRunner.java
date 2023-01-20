@@ -54,7 +54,7 @@ public class TestDataRunner implements ApplicationRunner {
 
         CustomerRequestList customerRequestList1 = CustomerRequestList.builder().userId(testCustomerUser.getId()).sellerId(testSellerUser.getId()).productId(1L).build();
         customerRequestListRepository.save(customerRequestList1);
-        CustomerRequestList customerRequestList2 = CustomerRequestList.builder().userId(testCustomerUser2.getId()).sellerId(testSellerUser.getId()).productId(1L).build();
+        CustomerRequestList customerRequestList2 = CustomerRequestList.builder().userId(testCustomerUser2.getId()).sellerId(testSellerUser.getId()).productId(2L).build();
         customerRequestListRepository.save(customerRequestList2);
         List<ProductRequestDto> productRequestDtoList = new ArrayList<>();
 

@@ -26,12 +26,13 @@ public class CustomerRequestList extends TimeStamped{
     private long productId;
 
     @Column
-    private boolean isAccepted = false;
+    private boolean isAccepted;
 
     public CustomerRequestList(long userId, long sellerId, long productId) {
         this.userId = userId;
         this.sellerId = sellerId;
         this.productId = productId;
+        this.isAccepted = false;
     }
 
     public void acceptBySeller(){
