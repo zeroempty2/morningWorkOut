@@ -7,7 +7,6 @@ import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.security.UserDetailsImpl;
 import com.sparta.morningworkout.service.PointServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

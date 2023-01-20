@@ -46,7 +46,11 @@ public class UserServiceImpl implements UserService {
             }
             role = UserRoleEnum.ADMIN;
         }
-        User user = new User(username, password, role);
+        User user = User.builder()
+                        .username(username)
+                        .password(password)
+                        .role(role)
+                        .build();
         userRepository.save(user);
         Profile profile = new Profile(user.getId(),sign.getNickname());
         profileRepository.save(profile);

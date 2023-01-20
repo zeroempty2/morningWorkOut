@@ -1,6 +1,7 @@
 package com.sparta.morningworkout.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +27,7 @@ public class User {
         this.role = UserRoleEnum.CUSTOMER;
     }
 
+    @Builder
     public User(String username, String password, UserRoleEnum role) {
         this.username = username;
         this.password = password;

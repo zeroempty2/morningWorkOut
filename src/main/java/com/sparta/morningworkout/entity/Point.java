@@ -1,6 +1,7 @@
 package com.sparta.morningworkout.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,9 +17,10 @@ public class Point {
     private int Point;
     private String adminname;
 
+    @Builder
     public Point(String username, int point, String adminname) {
         this.username = username;
         Point = point;
-        this.adminname = null;
+        this.adminname = adminname;
     }
 }

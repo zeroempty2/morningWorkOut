@@ -2,6 +2,7 @@ package com.sparta.morningworkout.testDataRun;
 
 import com.sparta.morningworkout.dto.product.ProductRequestDto;
 import com.sparta.morningworkout.entity.*;
+import com.sparta.morningworkout.repository.PointRepository;
 import com.sparta.morningworkout.repository.ProductRepository;
 import com.sparta.morningworkout.repository.ProfileRepository;
 import com.sparta.morningworkout.repository.UserRepository;
@@ -21,6 +22,7 @@ public class TestDataRunner implements ApplicationRunner {
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
     private final ProductRepository productRepository;
+    private final PointRepository pointRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -30,6 +32,8 @@ public class TestDataRunner implements ApplicationRunner {
         profileRepository.save(testAdminProfile);
         User testSellerUser = new User("Seller1", passwordEncoder.encode("sellerpassword1"), UserRoleEnum.SELLER);
         userRepository.save(testSellerUser);
+        Point testSeller = new Point("Seller1", 1000, null);
+        pointRepository.save(testSeller);
         Profile testSellerProfile = Profile.builder().id(testSellerUser.getId()).nickname("테스트판매자").category(CategoryEnum.IT).infoContent("testSeller").build();
         profileRepository.save(testSellerProfile);
 
