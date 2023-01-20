@@ -13,8 +13,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.HtmlUtils;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,25 +41,37 @@ public class ChatController {
      */
 
 
-    @MessageMapping("/hello") // HTTP 프로토콜 메서드 매핑, 메시지 메핑은 웹소켓 기반으로 다른 통신 방법,
-    // 상훈 어플리케이션 , 메시지를 주고받을때, 보내는 - 받는 바로 진행이 되는 것이 아닌
-    @SendTo("/topic/greeting")
+//    @MessageMapping("/hello") // HTTP 프로토콜 메서드 매핑, 메시지 메핑은 웹소켓 기반으로 다른 통신 방법,
+//    // 상훈 어플리케이션 , 메시지를 주고받을때, 보내는 - 받는 바로 진행이 되는 것이 아닌
+//    @SendTo("/topic/greeting")
 
 
 
     @PostMapping("/room/{productId}") // 상품을 통해 접근을 하게되니까 아무래도 roomId보단 상품아이디가 더 좋지않을까 하여...
     public ResponseEntity createRoom(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl customer) {
-
         String msg = chatRoomService.createRoom(productId, customer.getUser());
+
 
     }
 
+    @MessageMapping("/message/hello")
+    public void helloMessage(){
+
+    }
+
+
     @MessageMapping("/message")
-    public ResponseEntity<MessageDto> sendMessage(@Payload ChatRoomDto message, ChatRoomDto chatRoom, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public void sendMessage(@Payload ChatRoomDto message, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User sender = userDetails.getUser();
         chatRoomService.save(message);
-        messagingTemplate.convertAndSend("/room." + sender, chatRoom.getRoomId());
-        return ResponseEntity.status(HttpStatus.OK).body()
+        messagingTemplate.convertAndSend("/room." + sender, message.getRoomId());
+    }
+
+    @MessageMapping("/message")
+// simple broker를 사용하려면 Broker 설정에서 사용한 config에 맞는 값을 사용해야한다.
+//    @SendToUser("/topic/message")
+    public Greeting greetingMessage(UserMessage message) {
+        return new Greeting(HtmlUtils.htmlEscape("To "+ message.getTargetUserName() + ", " + message.getMessage()));
     }
 
 

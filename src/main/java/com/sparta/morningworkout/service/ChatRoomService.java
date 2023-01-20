@@ -2,7 +2,6 @@ package com.sparta.morningworkout.service;
 
 
 import com.sparta.morningworkout.dto.chat.ChatRoomDto;
-import com.sparta.morningworkout.dto.chat.MessageDto;
 import com.sparta.morningworkout.entity.Product;
 import com.sparta.morningworkout.entity.Profile;
 import com.sparta.morningworkout.entity.User;
@@ -18,10 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -37,6 +34,7 @@ public class ChatRoomService {
 
     public void save(ChatRoomDto message) {
         Message messages = new Message();
+
 
     }
 

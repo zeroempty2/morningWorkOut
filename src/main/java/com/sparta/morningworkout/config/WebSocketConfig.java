@@ -25,9 +25,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer { // St
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) { // broker 설정 부분
 
-        config.enableSimpleBroker("/topic"); //
+        config.enableSimpleBroker("/queue","/topic"); //
 
-        config.setApplicationDestinationPrefixes("/app/ㅁㄴㅇㅁㅇㄴ"); // 컨트롤러 도착지
+        config.setApplicationDestinationPrefixes("/app"); // 컨트롤러 도착지
     }
 
     // 메세지 도착 지점 url로 등록
