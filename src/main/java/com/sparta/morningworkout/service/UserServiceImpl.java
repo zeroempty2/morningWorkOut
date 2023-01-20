@@ -19,7 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -57,7 +61,7 @@ public class UserServiceImpl implements UserService {
     public String login(LoginUserRequestDto loginUserRequestDto) {
         User user = userRepository.findByUsername(loginUserRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다"));
-        if (!passwordEncoder.matches(user.getPassword(), loginUserRequestDto.getPassword()))
+        if (!passwordEncoder.matches(loginUserRequestDto.getPassword(),user.getPassword()))
         { throw new IllegalArgumentException("비밀번호 불일치"); }
         return jwtUtil.createToken(user.getUsername(), user.getRole());
     }
@@ -72,4 +76,22 @@ public class UserServiceImpl implements UserService {
                 sellerRegistRepository.save(sellerRegist);
 
     }
+
+    //유저 이름으로 상품을 검색하기 위해 유저 서비스딴에 유저의 이름으로 유저의 아이디를 뱉어내는 함수 추가.
+//    public List<Long> getUserIdByName(String username){
+//        List<User> users = userRepository.findByUsernameContaining(username);
+//
+//        if(users == null){
+//            throw new IllegalArgumentException("찾으시는 회원의 검색 결과가 없습니다!");
+//        }
+//
+//        List<Long> searchedUserIds = users.stream().map(s -> s.getId()).collect(Collectors.toList());
+//
+//
+//
+//
+//
+//
+//        return searchedUserIds;
+//    }
 }
