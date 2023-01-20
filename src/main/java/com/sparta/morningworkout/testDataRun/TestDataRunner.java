@@ -2,10 +2,7 @@ package com.sparta.morningworkout.testDataRun;
 
 import com.sparta.morningworkout.dto.product.ProductRequestDto;
 import com.sparta.morningworkout.entity.*;
-import com.sparta.morningworkout.repository.PointRepository;
-import com.sparta.morningworkout.repository.ProductRepository;
-import com.sparta.morningworkout.repository.ProfileRepository;
-import com.sparta.morningworkout.repository.UserRepository;
+import com.sparta.morningworkout.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -23,7 +20,7 @@ public class TestDataRunner implements ApplicationRunner {
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
     private final ProductRepository productRepository;
-
+    private final CustomerRequestListRepository customerRequestListRepository;
     private final PointRepository pointRepository;
 
     @Transactional
@@ -56,8 +53,9 @@ public class TestDataRunner implements ApplicationRunner {
         profileRepository.save(testCustomerProfile2);
 
         CustomerRequestList customerRequestList1 = CustomerRequestList.builder().userId(testCustomerUser.getId()).sellerId(testSellerUser.getId()).productId(1L).build();
+        customerRequestListRepository.save(customerRequestList1);
         CustomerRequestList customerRequestList2 = CustomerRequestList.builder().userId(testCustomerUser2.getId()).sellerId(testSellerUser.getId()).productId(1L).build();
-
+        customerRequestListRepository.save(customerRequestList2);
         List<ProductRequestDto> productRequestDtoList = new ArrayList<>();
 
         productRequestDtoList.add(new ProductRequestDto("맥북프로",5000000, CategoryEnum.IT));
