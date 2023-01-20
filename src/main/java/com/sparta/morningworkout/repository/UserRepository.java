@@ -32,5 +32,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select new com.sparta.morningworkout.dto.admin.UserContentsResponseDto(u.username, p.nickname) " +
             "from users u left join Profile p on u.id = p.id where u.role = 'SELLER' and p.nickname " +
             "like %:keyword%")
-    Page<UserContentsResponseDto> findSellersByProfileNicknameKeyword(Pageable pageable, @Param("keyword")String keyword);
+    Page<UserContentsResponseDto> findSellersByNickname(Pageable pageable, @Param("keyword")String keyword);
 }

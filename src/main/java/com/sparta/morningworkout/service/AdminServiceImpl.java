@@ -30,25 +30,24 @@ public class AdminServiceImpl implements AdminService {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findAllByRoleOrderByIdDescQuery(UserRoleEnum.CUSTOMER,pageable);
     }
-
-    @Override
-    public Page<UserContentsResponseDto> showCustomerListBySearchingNickname(int page, int size, String keyword) {
-        Pageable pageable = PageRequest.of(page, size);
-        return userRepository.findCustomersByProfileNicknameKeyword(pageable,keyword);
-    }
-    @Override
-    public Page<UserContentsResponseDto> showSellerListBySearchingNickname(int page, int size, String keyword) {
-        Pageable pageable = PageRequest.of(page, size);
-        return userRepository.findSellersByProfileNicknameKeyword(pageable,keyword);
-    }
-
     @Override
     @Transactional(readOnly = true)
     public Page<UserContentsResponseDto> showSellerList(int page,int size) {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findAllByRoleOrderByIdDescQuery(UserRoleEnum.SELLER,pageable);
     }
-
+    @Override
+    @Transactional(readOnly = true)
+    public Page<UserContentsResponseDto> showCustomerListBySearchingNickname(int page, int size, String keyword) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findCustomersByProfileNicknameKeyword(pageable,keyword);
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public Page<UserContentsResponseDto> showSellerListBySearchingNickname(int page, int size, String keyword) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findSellersByNickname(pageable,keyword);
+    }
     @Override
     @Transactional(readOnly = true)
     public List<SellerRegistResponseDto> showSellerRegistList() {
