@@ -10,6 +10,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,17 +22,19 @@ public class TestDataRunner implements ApplicationRunner {
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
     private final ProductRepository productRepository;
-
+    @Transactional
     @Override
     public void run(ApplicationArguments args) throws Exception {
         User testAdminUser = new User("관리자", passwordEncoder.encode("비밀번호"), UserRoleEnum.ADMIN);
         userRepository.save(testAdminUser);
         Profile testAdminProfile = new Profile(testAdminUser.getId(),"관리자");
-        profileRepository.save(testAdminProfile);
-        User testSellerUser = new User("Seller1", passwordEncoder.encode("sellerpassword1"), UserRoleEnum.SELLER);
+        profileRepository.saveAndFlush(testAdminProfile);
+        testAdminUser.setProfile(testAdminProfile);
+        User testSellerUser = new User("Seller", passwordEncoder.encode("sellerpassword1"), UserRoleEnum.SELLER);
         userRepository.save(testSellerUser);
-        Profile testSellerProfile = Profile.builder().id(testSellerUser.getId()).nickname("테스트판매자").category(CategoryEnum.IT).infoContent("testSeller").build();
-        profileRepository.save(testSellerProfile);
+        Profile testSellerProfile = Profile.builder().nickname("테스트판매자").category(CategoryEnum.IT).infoContent("testSeller").id(testSellerUser.getId()).build();
+        profileRepository.saveAndFlush(testSellerProfile);
+        testSellerUser.setProfile(testSellerProfile);
 
         List<ProductRequestDto> productRequestDtoList = new ArrayList<>();
 

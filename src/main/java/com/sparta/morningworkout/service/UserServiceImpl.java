@@ -50,14 +50,15 @@ public class UserServiceImpl implements UserService {
         User user = new User(username, password, role);
         userRepository.save(user);
         Profile profile = new Profile(user.getId(),sign.getNickname());
-        profileRepository.save(profile);
+        profileRepository.saveAndFlush(profile);
+        user.setProfile(profile);
     }
 
     @Override
     public String login(LoginUserRequestDto loginUserRequestDto) {
         User user = userRepository.findByUsername(loginUserRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다"));
-        if (!passwordEncoder.matches(user.getPassword(), loginUserRequestDto.getPassword()))
+        if (!passwordEncoder.matches(loginUserRequestDto.getPassword(),user.getPassword() ))
         { throw new IllegalArgumentException("비밀번호 불일치"); }
         return jwtUtil.createToken(user.getUsername(), user.getRole());
     }
