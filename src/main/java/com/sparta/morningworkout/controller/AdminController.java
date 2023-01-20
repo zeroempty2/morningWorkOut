@@ -1,5 +1,6 @@
 package com.sparta.morningworkout.controller;
 
+import com.sparta.morningworkout.dto.admin.SearchNicknameResponseDto;
 import com.sparta.morningworkout.dto.admin.SellerRegistResponseDto;
 import com.sparta.morningworkout.dto.StatusResponseDto;
 import com.sparta.morningworkout.dto.admin.UserListResponseDto;
@@ -35,6 +36,28 @@ public class AdminController {
             @RequestParam int page,
             @RequestParam int size) {
         Page<UserListResponseDto> responseDto = adminService.showSellerList(page - 1, size);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        return ResponseEntity.ok().headers(headers).body(responseDto);
+    }
+    @GetMapping("/customers/search/nickname")
+    public ResponseEntity<Page<SearchNicknameResponseDto>> showCustomerListBySearchingNickname(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam(value = "keyword") String keyword
+    ) {
+        Page<SearchNicknameResponseDto> responseDto = adminService.showCustomerListBySearchingNickname(page - 1, size, keyword);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        return ResponseEntity.ok().headers(headers).body(responseDto);
+    }
+    @GetMapping("/sellers/search/nickname")
+    public ResponseEntity<Page<SearchNicknameResponseDto>> showSellerListBySearchingNickname(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam(value = "keyword") String keyword
+    ) {
+        Page<SearchNicknameResponseDto> responseDto = adminService.showSellerListBySearchingNickname(page - 1, size, keyword);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.ok().headers(headers).body(responseDto);

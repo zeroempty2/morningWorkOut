@@ -1,12 +1,10 @@
 package com.sparta.morningworkout.service;
 
+import com.sparta.morningworkout.dto.admin.SearchNicknameResponseDto;
 import com.sparta.morningworkout.dto.admin.SellerRegistResponseDto;
 import com.sparta.morningworkout.dto.StatusResponseDto;
 import com.sparta.morningworkout.dto.admin.UserListResponseDto;
-import com.sparta.morningworkout.entity.Profile;
-import com.sparta.morningworkout.entity.SellerRegist;
-import com.sparta.morningworkout.entity.User;
-import com.sparta.morningworkout.entity.UserRoleEnum;
+import com.sparta.morningworkout.entity.*;
 import com.sparta.morningworkout.repository.ProfileRepository;
 import com.sparta.morningworkout.repository.SellerRegistRepository;
 import com.sparta.morningworkout.repository.UserRepository;
@@ -36,6 +34,17 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Page<SearchNicknameResponseDto> showCustomerListBySearchingNickname(int page, int size, String keyword) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findCustomersByProfileNicknameKeyword(pageable,keyword);
+    }
+    @Override
+    public Page<SearchNicknameResponseDto> showSellerListBySearchingNickname(int page, int size, String keyword) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findSellersByProfileNicknameKeyword(pageable,keyword);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Page<UserListResponseDto> showSellerList(int page,int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -60,7 +69,7 @@ public class AdminServiceImpl implements AdminService {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않습니다.")
         );
-        Profile profile = profileRepository.findById(userId).orElseThrow(
+        Profile profile = profileRepository.findById(user.getId()).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않습니다.")
         );
         user.changeSeller();
