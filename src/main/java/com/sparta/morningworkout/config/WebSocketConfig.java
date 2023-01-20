@@ -1,28 +1,33 @@
 package com.sparta.morningworkout.config;
 
-import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.ChannelRegistration;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+/***
+ * 웹 소켓은 http가 아닌 ws로 시작하는 자체적인 주소체계를 가지고 있음
+ * https == wss
+ *
+ */
 @Configuration
 @EnableWebSocketMessageBroker // 메시지 처리 활성화
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer { // Stomp 사용
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketConfig.class);
+//    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketConfig.class);
     private final StompHandler stompHandler; // jwt 인증
+
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) { // broker 설정 부분
-        config.enableSimpleBroker("/topic/chat"); // 메시지 받을 때, 내장 브로커 사용, prefix 붙은 메시지를 발행 시 브로커가 처리
-        config.setApplicationDestinationPrefixes("/app"); // 메시지를 보내는 과정, 메시지 핸들러로 라우팅되는 prefix, 즉 해당 "/app"이라는 경로를 처리하는 핸들러, controller로 전달
+
+        config.enableSimpleBroker("/topic"); //
+
+        config.setApplicationDestinationPrefixes("/app/ㅁㄴㅇㅁㅇㄴ"); // 컨트롤러 도착지
     }
 
     // 메세지 도착 지점 url로 등록
@@ -34,8 +39,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer { // St
                 .setHeartbeatTime(60_000); // HTTP header 통해 연결 상태 주기적으로 확인하는데, 그 주기를 설정
     }
 
-    @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(stompHandler);
-    }
+//    @Override
+//    public void configureClientInboundChannel(ChannelRegistration registration) {
+//        registration.interceptors(stompHandler);
+//    }
 }

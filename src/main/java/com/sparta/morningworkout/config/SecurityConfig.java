@@ -44,6 +44,7 @@ public class SecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .requestMatchers("/users/sign")
                 .requestMatchers("/users/login")
+//                .requestMatchers("/ws/**")
                 .requestMatchers("/users/logout");
     }
 

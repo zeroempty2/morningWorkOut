@@ -26,6 +26,7 @@ public class CustomerController {
     private final CustomerServiceImpl customerService;
 
     @GetMapping("/sellers")
+    @RequestMapping
     public ResponseEntity<Page<SellerListResponseDto>> showSellerList(@RequestParam int page,@RequestParam int size){
 
         Page<SellerListResponseDto> sellerList = customerService.showSellerList(page-1,size);

@@ -2,52 +2,82 @@ package com.sparta.morningworkout.controller;
 
 import com.sparta.morningworkout.dto.chat.ChatRoomDto;
 import com.sparta.morningworkout.dto.chat.MessageDto;
+import com.sparta.morningworkout.entity.User;
+import com.sparta.morningworkout.security.UserDetailsImpl;
 import com.sparta.morningworkout.service.ChatRoomService;
 import com.sparta.morningworkout.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.ErrorResponse;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin // cors 관련
+@RequestMapping("/chat") // -> /app/chat
 public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatRoomService chatRoomService;
     private final MessageService messageService;
 
-//    @MessageMapping("/hello") // requestMapping과 비슷한 역할, webSocketConfig에서 설정한 목적지prefix에 맞춰서 "/api/hello"라는 목적지를 가진 uri들이 해당 핸들러로 들어옴
-//    @SendTo("/user/greeting") // 핸들러에서 처리를 마친 값들을 "/user/greeting"이라는 값으로 보낸다는 의미, 이때 앞에 붙은 user로 인해 다시 simpleBroker로 전달
 
-    @MessageMapping("/chat/send") // 메시지를 보내는 역할
-    public void chat(MessageDto.Send message) {
-        messageService.sendMessage(message);
-        messagingTemplate.convertAndSend("/topic/chat" + message.getReceiveredId(), message);
+//    @MessageMapping - message
+//    @PostMapping - room
+
+    /**
+     * 1. 방 만들기 createRoom -> 상품, 유저(구매자) -> postMapping
+     * 2. 메시지 보내기 sendMessage - m
+     * 3. 메시지 확인하기 checkMessage - m
+     * 4. 방 찾기 findRoom - get
+     * 5. 방 나가기 deleteRoom - delete
+     */
+
+
+    @MessageMapping("/hello") // HTTP 프로토콜 메서드 매핑, 메시지 메핑은 웹소켓 기반으로 다른 통신 방법,
+    // 상훈 어플리케이션 , 메시지를 주고받을때, 보내는 - 받는 바로 진행이 되는 것이 아닌
+    @SendTo("/topic/greeting")
+
+
+
+    @PostMapping("/room/{productId}") // 상품을 통해 접근을 하게되니까 아무래도 roomId보단 상품아이디가 더 좋지않을까 하여...
+    public ResponseEntity createRoom(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl customer) {
+
+        String msg = chatRoomService.createRoom(productId, customer.getUser());
+
     }
 
-    @PostMapping("/chat/room")
-    public ResponseEntity JoinChatRoom(@RequestBody ChatRoomDto requestDto) {
-        try {
-            Long roomId = chatRoomService.joinChatRoom(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new Result<>(roomId));
-        } catch(IllegalStateException e) {
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), "400"));
-        }
+    @MessageMapping("/message")
+    public ResponseEntity<MessageDto> sendMessage(@Payload ChatRoomDto message, ChatRoomDto chatRoom, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User sender = userDetails.getUser();
+        chatRoomService.save(message);
+        messagingTemplate.convertAndSend("/room." + sender, chatRoom.getRoomId());
+        return ResponseEntity.status(HttpStatus.OK).body()
     }
 
 
-    @GetMapping("/chat/room") // 채팅방 찾기
-    public ResponseEntity getChatRoomList() {
+//    @SubscribeMapping("/room.{roomId}")
+//    public MessageDto chatInRoom(@Payload MessageDto message, @DestinationVariable String roomId) {
+//        return
+//    }
+
+    @MessageMapping("/")
+    public void checkMessage() {
 
     }
 
-    @DeleteMapping("/chat/room")
-    public ResponseEntity deleteChatRoom(){
+    @GetMapping("/")
+    public void findRoom() {
+
+    }
+
+    @DeleteMapping("/")
+    public void deleteRoom() {
 
     }
 }
