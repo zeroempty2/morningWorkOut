@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.sparta.morningworkout.entity.Product;
 import com.sparta.morningworkout.entity.User;
+import com.sparta.morningworkout.zschat.dto.MessageDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -42,4 +43,12 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
     private List<Message> messages = new ArrayList<>();
 
+    public ChatRoom(Long id, Product product, User user) {
+        this.id = id;
+        this.user = user;
+        this.product = product;
+    }
+
+    public ChatRoom(Long chatRoomId, Product product, MessageDto message) {
+    }
 }

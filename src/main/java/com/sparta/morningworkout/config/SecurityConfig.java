@@ -1,13 +1,5 @@
 package com.sparta.morningworkout.config;
 
-
-
-import com.sparta.morningworkout.jwtUtil.JwtUtil;
-import com.sparta.morningworkout.security.CustomAccessDeniedHandler;
-import com.sparta.morningworkout.security.CustomAuthenticationEntryPoint;
-import com.sparta.morningworkout.security.JwtAuthFilter;
-import com.sparta.morningworkout.security.UserDetailsServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +12,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.sparta.morningworkout.entity.UserRoleEnum.Authority.*;
+import com.sparta.morningworkout.jwtUtil.JwtUtil;
+import com.sparta.morningworkout.security.CustomAccessDeniedHandler;
+import com.sparta.morningworkout.security.CustomAuthenticationEntryPoint;
+import com.sparta.morningworkout.security.JwtAuthFilter;
+import com.sparta.morningworkout.security.UserDetailsServiceImpl;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
@@ -41,11 +39,11 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers(PathRequest.toH2Console())
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .requestMatchers("/users/sign")
-                .requestMatchers("/users/login")
-//                .requestMatchers("/ws/**")
-                .requestMatchers("/users/logout");
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+//                 .requestMatchers("/users/sign")
+//                 .requestMatchers("/users/login")
+// //                .requestMatchers("/ws/**")
+//                 .requestMatchers("/users/logout");
     }
 
     @Bean

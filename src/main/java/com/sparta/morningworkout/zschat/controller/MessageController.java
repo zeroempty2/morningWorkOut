@@ -26,6 +26,8 @@ public class MessageController {
         String receiver = message.getReceiver();
         log.info(receiver);
         messageService.save(message, userDetails.getUsername());
-        simpMessagingTemplate.convertAndSend("/topic/" + receiver,message);
+
+        simpMessagingTemplate.convertAndSendToUser(receiver, "/queue", message);
+        // simpMessagingTemplate.convertAndSend("/topic/" + receiver,message);
     }
 }
