@@ -1,4 +1,4 @@
-package com.sparta.morningworkout.config;
+package com.sparta.morningworkout.zschat;
 
 import com.sparta.morningworkout.jwtUtil.JwtUtil;
 import lombok.RequiredArgsConstructor;

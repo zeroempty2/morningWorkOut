@@ -1,0 +1,24 @@
+setApplicationDestinationPrefixes -> ct에서 보낸 메시지 받는
+enableSimpleBroker -> 해당 주소 구독하고 있는 ct에게 전달
+
+---
+
+1. entity
+room -> 채팅방 (메시지 보여주는 용도)
+    - join에 쓰일 roomId 필요
+    - 방에 보일 내용 필요 -> Message
+join -> user 랑 room 연결 -> product로 확인해서 연결???
+    - productId, userId, roomId 필요
+message -> 채팅 기록
+    - 내보낼 메시지
+    - 보낸 시간 & 받은 시각
+    - 방 아이디
+    - 쓴 사람
+
+---
+이메일로 user 확인 -> userId로 확인으로 변경
+
+
+
+
+
