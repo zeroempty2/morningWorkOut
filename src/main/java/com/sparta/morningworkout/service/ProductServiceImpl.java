@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,13 +39,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional // 트랜잭셔널 유무로 업데이트 상황
-    public String updateProduct(Long productId, ProductUpdateRequestDto productUpdateRequestDto,User user) {
+    public String updateProduct(Long productId, ProductUpdateRequestDto productUpdateRequestDto, User user) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("해당 제품은 등록되지 않은 제품입니다"));
-        if(user.checkUser(product.getUserId())) {
+        if (user.checkUser(product.getUserId())) {
             product.update(productUpdateRequestDto);
             return "해당 제품의 가격이 업데이트 되었습니다";
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("해당 유저는 해당 상품에 관해 업데이트를 할 수 있는 권한이 존재하지않습니다");
         }
     }
@@ -80,10 +80,17 @@ public class ProductServiceImpl implements ProductService {
         return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()));
     }
 
+    @Override
+    public Product findProduct(Long productId) {
+        return productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("해당 상품은 존재하지 않습니다"));
+    }
+
     // Pageable 생성 메서드
     public Pageable makePage(PageDto pageDto) {
         Sort.Direction direction = pageDto.isAsc() ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, pageDto.getSortBy());
         return PageRequest.of(pageDto.getPage() - 1, pageDto.getSize(), sort);
     }
+
+
 }

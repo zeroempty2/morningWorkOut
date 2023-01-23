@@ -23,24 +23,21 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer { // St
 
 
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry config) { // broker 설정 부분
+    public void configureMessageBroker(MessageBrokerRegistry registry) { // broker 설정 부분
 
-        config.enableSimpleBroker("/queue","/topic"); //
+        registry.enableSimpleBroker("/queue", "/topic"); //
 
-        config.setApplicationDestinationPrefixes("/app"); // 컨트롤러 도착지
+        registry.setApplicationDestinationPrefixes("/app"); // 컨트롤러 도착지
     }
 
     // 메세지 도착 지점 url로 등록
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) { //
-        registry.addEndpoint("/ws") // 웹소켓 연결을 위한 주소 배정
+    public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) { //
+        stompEndpointRegistry.addEndpoint("/ws/chat") // 웹소켓 연결을 위한 주소 배정->
                 .setAllowedOriginPatterns("*") // url 요청이 다른 경우 cors로 인한 연결 x 상태 방지?
-                .withSockJS() // socketJs로 연결한다는 설정
-                .setHeartbeatTime(60_000); // HTTP header 통해 연결 상태 주기적으로 확인하는데, 그 주기를 설정
+                .withSockJS(); // socketJs로 연결한다는 설정
+//                .setHeartbeatTime(60_000); // HTTP header 통해 연결 상태 주기적으로 확인하는데, 그 주기를 설정
     }
 
-//    @Override
-//    public void configureClientInboundChannel(ChannelRegistration registration) {
-//        registration.interceptors(stompHandler);
-//    }
+
 }

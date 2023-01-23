@@ -20,7 +20,7 @@ public class StompHandler implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         if (accessor.getCommand() == StompCommand.CONNECT) {
             if (!jwtUtil.validateToken(accessor.getFirstNativeHeader("Authorization")))
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException("접근이 불가능한 사용자입니다");
         }
         return message;
     }

@@ -27,24 +27,32 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roomId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "SELLER_ID", nullable = false)
-//    private User seller;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "CUSTOMER_ID", nullable = false)
-//    private User customer;
+    @ManyToOne
+    @JoinColumn(name = "SELLER_ID", nullable = false)
+    private User seller;
 
-//    @JsonProperty("collection")
-    @OneToMany(mappedBy = "chatRoom",cascade = CascadeType.REMOVE)
-    private List<ChatParticipant> chatParticipants;
+    @ManyToOne
+    @JoinColumn(name = "CUSTOMER_ID", nullable = false)
+    private User customer;
 
-    @OneToMany(mappedBy = "chatRoom",cascade = CascadeType.REMOVE)
-    private List<Message> messages;
+
+//    @OneToMany(mappedBy = "chatRoom",cascade = CascadeType.REMOVE)
+//    private List<ChatParticipant> chatParticipants;
+
+//    @OneToMany(mappedBy = "chatRoom",cascade = CascadeType.REMOVE)
+//    private List<Message> messages;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Product product;
+
+    public static ChatRoom create(User customer,User seller ,Product product) {
+        ChatRoom room = new ChatRoom();
+        room.product = product;
+        room.customer = customer;
+        room.seller = seller;
+        return room;
+    }
 
 
 //    public void handActions

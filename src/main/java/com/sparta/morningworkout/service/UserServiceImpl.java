@@ -1,7 +1,6 @@
 package com.sparta.morningworkout.service;
 
 
-
 import com.sparta.morningworkout.dto.users.LoginUserRequestDto;
 import com.sparta.morningworkout.dto.users.SellerRegistRequestDto;
 import com.sparta.morningworkout.dto.users.SignupDto;
@@ -35,7 +34,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void signup(SignupDto sign) {
         Optional<User> users = userRepository.findByUsername(sign.getUsername());
-        if (users.isPresent()) { throw new IllegalArgumentException("유저가 존재합니다"); }
+        if (users.isPresent()) {
+            throw new IllegalArgumentException("유저가 존재합니다");
+        }
         String username = sign.getUsername();
         String password = passwordEncoder.encode(sign.getPassword());
 
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = new User(username, password, role);
         userRepository.save(user);
-        Profile profile = new Profile(user.getId(),sign.getNickname());
+        Profile profile = new Profile(user.getId(), sign.getNickname());
         profileRepository.save(profile);
     }
 
@@ -57,19 +58,26 @@ public class UserServiceImpl implements UserService {
     public String login(LoginUserRequestDto loginUserRequestDto) {
         User user = userRepository.findByUsername(loginUserRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다"));
-        if (!passwordEncoder.matches(loginUserRequestDto.getPassword(),user.getPassword()))
-        { throw new IllegalArgumentException("비밀번호 불일치"); }
+        if (!passwordEncoder.matches(loginUserRequestDto.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호 불일치");
+        }
         return jwtUtil.createToken(user.getUsername(), user.getRole());
     }
 
     @Override
-    public void logout(User user) {}
+    public void logout(User user) {
+    }
 
     @Override
     public void sellerRegist(SellerRegistRequestDto sellerRegistRequestDto, User user) {
-                SellerRegist sellerRegist = new SellerRegist(user.getId(), user.getUsername(),
-                        sellerRegistRequestDto.getInfocontent(),sellerRegistRequestDto.getCategoryEnum());
-                sellerRegistRepository.save(sellerRegist);
+        SellerRegist sellerRegist = new SellerRegist(user.getId(), user.getUsername(),
+                sellerRegistRequestDto.getInfocontent(), sellerRegistRequestDto.getCategoryEnum());
+        sellerRegistRepository.save(sellerRegist);
 
+    }
+
+    @Override
+    public User findUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지않습니다"));
     }
 }

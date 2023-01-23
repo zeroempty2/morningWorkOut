@@ -14,4 +14,6 @@ public interface UserService {
     String login(LoginUserRequestDto loginUserRequestDto);
     void logout(User user);
     void sellerRegist(SellerRegistRequestDto sellerRegistRequestDto, User user);
+
+    User findUser(Long userId);
 }

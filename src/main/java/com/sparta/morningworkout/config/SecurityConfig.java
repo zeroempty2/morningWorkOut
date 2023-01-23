@@ -44,6 +44,8 @@ public class SecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .requestMatchers("/users/sign")
                 .requestMatchers("/users/login")
+                .requestMatchers("/ws/**")
+
 //                .requestMatchers("/ws/**")
                 .requestMatchers("/users/logout");
     }
@@ -64,6 +66,7 @@ public class SecurityConfig {
                 .requestMatchers("/sellers/**").hasAnyRole("SELLER") // Enum형태로 넣으면 인식 못함!
                 .requestMatchers("/products/list").permitAll()
                 .requestMatchers("/products/list/seller/**").permitAll()
+                .requestMatchers("/ws/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 
