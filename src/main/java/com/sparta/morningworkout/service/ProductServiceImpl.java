@@ -3,6 +3,7 @@ package com.sparta.morningworkout.service;
 import com.sparta.morningworkout.dto.PageDto;
 import com.sparta.morningworkout.dto.product.ProductRequestDto;
 import com.sparta.morningworkout.dto.product.ProductResponseDto;
+import com.sparta.morningworkout.dto.search.ProductResponseSearchByNameDto;
 import com.sparta.morningworkout.dto.product.ProductUpdateRequestDto;
 import com.sparta.morningworkout.entity.Product;
 import com.sparta.morningworkout.entity.User;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
 
         Page<Product> products = productRepository.findAll(pageable);
 
-        return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()));
+        return products.map(ProductResponseDto::new);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductResponseDto> showProductBySeller(Long sellerId, PageDto pageDto) {
         Pageable pageable = makePage(pageDto);
         Page<Product> products = productRepository.findAllByUserId(sellerId, pageable);
-        return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()));
+        return products.map(ProductResponseDto::new);
     }
 
     // Pageable 생성 메서드
@@ -85,5 +85,20 @@ public class ProductServiceImpl implements ProductService {
         Sort.Direction direction = pageDto.isAsc() ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, pageDto.getSortBy());
         return PageRequest.of(pageDto.getPage() - 1, pageDto.getSize(), sort);
+    }
+
+    public Page<ProductResponseDto> searchByProductsName(int page,int size,String keyword) {
+        // 쿼리가 한번에 나갈 수 있을까?
+        Pageable pageable = PageRequest.of(page,size);
+       Page<Product> products = productRepository.findByProductNameContaining(keyword,pageable);
+       return products.map(ProductResponseDto::new);
+    }
+
+    public Page<ProductResponseSearchByNameDto> searchBySellerName(int page, int size,String sellerName) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<ProductResponseSearchByNameDto> products = productRepository.findAllBySellerName(sellerName,pageable);
+
+        return products;
+
     }
 }

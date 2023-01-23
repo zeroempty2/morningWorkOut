@@ -1,10 +1,9 @@
 package com.sparta.morningworkout.controller;
 
 import com.sparta.morningworkout.dto.StatusResponseDto;
+import com.sparta.morningworkout.dto.admin.UserContentsResponseDto;
 import com.sparta.morningworkout.dto.sellers.SellerListResponseDto;
-import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.security.UserDetailsImpl;
-import com.sparta.morningworkout.security.UserDetailsServiceImpl;
 import com.sparta.morningworkout.service.CustomerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -35,6 +34,16 @@ public class CustomerController {
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(sellerList);
 
+    }
+    @GetMapping("/search/seller")
+    public ResponseEntity<Page<UserContentsResponseDto>> searchSellerListBySellerNickname(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam(value = "keyword") String keyword){
+        Page<UserContentsResponseDto> responseDto = customerService.searchSellerListBySellerNickname(page - 1, size, keyword);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        return ResponseEntity.ok().headers(headers).body(responseDto);
     }
 
 

@@ -4,11 +4,13 @@ package com.sparta.morningworkout.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class CustomerRequestList {
+@SuperBuilder
+public class CustomerRequestList extends TimeStamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,12 +26,13 @@ public class CustomerRequestList {
     private long productId;
 
     @Column
-    private boolean isAccepted = false;
+    private boolean isAccepted;
 
     public CustomerRequestList(long userId, long sellerId, long productId) {
         this.userId = userId;
         this.sellerId = sellerId;
         this.productId = productId;
+        this.isAccepted = false;
     }
 
     public void acceptBySeller(){

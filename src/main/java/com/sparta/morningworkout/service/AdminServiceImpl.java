@@ -1,12 +1,9 @@
 package com.sparta.morningworkout.service;
 
+import com.sparta.morningworkout.dto.admin.UserContentsResponseDto;
 import com.sparta.morningworkout.dto.admin.SellerRegistResponseDto;
 import com.sparta.morningworkout.dto.StatusResponseDto;
-import com.sparta.morningworkout.dto.admin.UserListResponseDto;
-import com.sparta.morningworkout.entity.Profile;
-import com.sparta.morningworkout.entity.SellerRegist;
-import com.sparta.morningworkout.entity.User;
-import com.sparta.morningworkout.entity.UserRoleEnum;
+import com.sparta.morningworkout.entity.*;
 import com.sparta.morningworkout.repository.ProfileRepository;
 import com.sparta.morningworkout.repository.SellerRegistRepository;
 import com.sparta.morningworkout.repository.UserRepository;
@@ -29,20 +26,28 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<UserListResponseDto> showCustomerList(int page,int size) {
+    public Page<UserContentsResponseDto> showCustomerList(int page,int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<User> customers = userRepository.findAllByRoleOrderByIdDesc(UserRoleEnum.CUSTOMER,pageable);
-        return customers.map(UserListResponseDto::new);
+        return userRepository.findAllByRoleOrderByIdDescQuery(UserRoleEnum.CUSTOMER,pageable);
     }
-
     @Override
     @Transactional(readOnly = true)
-    public Page<UserListResponseDto> showSellerList(int page,int size) {
+    public Page<UserContentsResponseDto> showSellerList(int page,int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<User> sellers = userRepository.findAllByRoleOrderByIdDesc(UserRoleEnum.SELLER,pageable);
-        return sellers.map(UserListResponseDto::new);
+        return userRepository.findAllByRoleOrderByIdDescQuery(UserRoleEnum.SELLER,pageable);
     }
-
+    @Override
+    @Transactional(readOnly = true)
+    public Page<UserContentsResponseDto> showCustomerListBySearchingNickname(int page, int size, String keyword) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findCustomersByProfileNicknameKeyword(pageable,keyword);
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public Page<UserContentsResponseDto> showSellerListBySearchingNickname(int page, int size, String keyword) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findSellersByNickname(pageable,keyword);
+    }
     @Override
     @Transactional(readOnly = true)
     public List<SellerRegistResponseDto> showSellerRegistList() {
@@ -60,7 +65,7 @@ public class AdminServiceImpl implements AdminService {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않습니다.")
         );
-        Profile profile = profileRepository.findById(userId).orElseThrow(
+        Profile profile = profileRepository.findById(user.getId()).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않습니다.")
         );
         user.changeSeller();

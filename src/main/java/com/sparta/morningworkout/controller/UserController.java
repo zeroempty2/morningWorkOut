@@ -38,7 +38,7 @@ public class UserController {
     @PostMapping("/logout")
     public ResponseEntity logout(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response) {
         User user = userDetails.getUser();
-        response.setHeader(jwtUtil.AUTHORIZATION_HEADER, "asd");
+        response.setHeader(jwtUtil.AUTHORIZATION_HEADER, "");
         userServiceimpl.logout(user);
         return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
     }
