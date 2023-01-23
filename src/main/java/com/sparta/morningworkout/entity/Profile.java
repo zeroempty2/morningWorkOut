@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @NoArgsConstructor
 @SuperBuilder
-public class Profile {
+public class Profile extends TimeStamped{
 	@Id
 	private long id;
 	@Column(nullable = false)

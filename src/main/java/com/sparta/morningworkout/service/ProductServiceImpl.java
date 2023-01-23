@@ -3,6 +3,7 @@ package com.sparta.morningworkout.service;
 import com.sparta.morningworkout.dto.PageDto;
 import com.sparta.morningworkout.dto.product.ProductRequestDto;
 import com.sparta.morningworkout.dto.product.ProductResponseDto;
+import com.sparta.morningworkout.dto.search.ProductResponseSearchByNameDto;
 import com.sparta.morningworkout.dto.product.ProductUpdateRequestDto;
 import com.sparta.morningworkout.entity.Product;
 import com.sparta.morningworkout.entity.User;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,12 +38,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional // 트랜잭셔널 유무로 업데이트 상황
-    public String updateProduct(Long productId, ProductUpdateRequestDto productUpdateRequestDto, User user) {
+    public String updateProduct(Long productId, ProductUpdateRequestDto productUpdateRequestDto,User user) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("해당 제품은 등록되지 않은 제품입니다"));
-        if (user.checkUser(product.getUserId())) {
+        if(user.checkUser(product.getUserId())) {
             product.update(productUpdateRequestDto);
             return "해당 제품의 가격이 업데이트 되었습니다";
-        } else {
+        }
+        else {
             throw new IllegalArgumentException("해당 유저는 해당 상품에 관해 업데이트를 할 수 있는 권한이 존재하지않습니다");
         }
     }
@@ -68,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
 
         Page<Product> products = productRepository.findAll(pageable);
 
-        return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()));
+        return products.map(ProductResponseDto::new);
     }
 
     @Override
@@ -77,12 +77,7 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductResponseDto> showProductBySeller(Long sellerId, PageDto pageDto) {
         Pageable pageable = makePage(pageDto);
         Page<Product> products = productRepository.findAllByUserId(sellerId, pageable);
-        return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()));
-    }
-
-    @Override
-    public Product findProduct(Long productId) {
-        return productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("해당 상품은 존재하지 않습니다"));
+        return products.map(ProductResponseDto::new);
     }
 
     // Pageable 생성 메서드
@@ -92,5 +87,18 @@ public class ProductServiceImpl implements ProductService {
         return PageRequest.of(pageDto.getPage() - 1, pageDto.getSize(), sort);
     }
 
+    public Page<ProductResponseDto> searchByProductsName(int page,int size,String keyword) {
+        // 쿼리가 한번에 나갈 수 있을까?
+        Pageable pageable = PageRequest.of(page,size);
+       Page<Product> products = productRepository.findByProductNameContaining(keyword,pageable);
+       return products.map(ProductResponseDto::new);
+    }
 
+    public Page<ProductResponseSearchByNameDto> searchBySellerName(int page, int size,String sellerName) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<ProductResponseSearchByNameDto> products = productRepository.findAllBySellerName(sellerName,pageable);
+
+        return products;
+
+    }
 }

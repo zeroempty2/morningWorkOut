@@ -33,6 +33,10 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
     }
 
+    public Long getUserId() {
+        return this.user.getId();
+    }
+
     @Override
     public String getPassword() {
         return this.user.getPassword();
