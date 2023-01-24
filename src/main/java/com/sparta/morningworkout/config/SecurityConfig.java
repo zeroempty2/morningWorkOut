@@ -43,7 +43,9 @@ public class SecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .requestMatchers("/users/sign")
                 .requestMatchers("/users/login")
+                .requestMatchers("/docs/**")
                 .requestMatchers("/users/logout");
+
     }
 
     @Bean
@@ -55,7 +57,6 @@ public class SecurityConfig {
         http.authorizeHttpRequests()
                 .requestMatchers("/products/seller/**").hasAnyRole("SELLER")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                .requestMatchers("/sellers/**").hasAnyRole("SELLER","ADMIN")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                  // Enum형태로 넣으면 인식 못함!
                 .requestMatchers("/products/list").permitAll()
@@ -65,10 +66,10 @@ public class SecurityConfig {
                 .requestMatchers("/point/admin").hasAnyRole("ADMIN")
                 .requestMatchers("/chat/**").permitAll()
                 .requestMatchers("/chatroom/**").permitAll()
-                .requestMatchers("/customers/**").permitAll()
+                .requestMatchers("/customers/**").hasAnyRole("CUSTOMER")
                 .requestMatchers("/profile/**").permitAll()
                 .requestMatchers("/sellers/**").hasAnyRole("SELLER")
-                .requestMatchers("/users/**").hasAnyRole("CUSTOMER")
+                .requestMatchers("/users/authorization").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 

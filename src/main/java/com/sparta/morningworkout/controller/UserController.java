@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,16 +33,14 @@ public class UserController {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, generatedToken);
         return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
     }
-
+    @Transactional
     @PostMapping("/logout")
-    public ResponseEntity logout(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response) {
-        User user = userDetails.getUser();
+    public ResponseEntity logout(HttpServletResponse response) {
         response.setHeader(JwtUtil.AUTHORIZATION_HEADER, null);
-        userServiceimpl.logout(user);
         return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
     }
 
-    @PostMapping("/athorization")
+    @PostMapping("/authorization")
     public ResponseEntity athorization(@RequestBody SellerRegistRequestDto sellerRegistRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         userServiceimpl.sellerRegist(sellerRegistRequestDto, user);

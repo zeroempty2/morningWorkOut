@@ -79,15 +79,15 @@ public class AdminController {
         return ResponseEntity.ok().headers(headers).body(statusResponseDto);
     }
 
-    @PatchMapping("/authorization/delete/{authorizationRequestId}")
-    public ResponseEntity<StatusResponseDto> deleteSellerRegist(@PathVariable Long authorizationRequestId) {
-        StatusResponseDto statusResponseDto = adminService.deleteSellerRegist(authorizationRequestId);
+    @PatchMapping("/authorization/delete/{userId}")
+    public ResponseEntity<StatusResponseDto> deleteSellerRegist(@PathVariable Long userId) {
+        StatusResponseDto statusResponseDto = adminService.deleteSellerRegist(userId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.ok().headers(headers).body(statusResponseDto);
     }
     @PostMapping("/point/{userId}")
-    public ResponseEntity<StatusResponseDto> givePoint(@PathVariable Long userId, PointUpdateRequestDto pointUpdateRequestDto) {
+    public ResponseEntity<StatusResponseDto> givePoint(@PathVariable Long userId, @RequestBody PointUpdateRequestDto pointUpdateRequestDto) {
         StatusResponseDto statusResponseDto = adminService.givePoint(userId,pointUpdateRequestDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));

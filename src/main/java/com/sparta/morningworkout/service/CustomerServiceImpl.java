@@ -1,6 +1,7 @@
 package com.sparta.morningworkout.service;
 
 
+import com.sparta.morningworkout.dto.StatusResponseDto;
 import com.sparta.morningworkout.dto.admin.UserContentsResponseDto;
 import com.sparta.morningworkout.dto.sellers.SellerListResponseDto;
 import com.sparta.morningworkout.entity.*;
@@ -58,7 +59,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public String requestBuyProducts(long userId, long productId) {
+    public StatusResponseDto requestBuyProducts(long userId, long productId) {
 
         //시큐리티를 걸쳐 로그인 된 Customer가 구매요청을 보내는 것 이므로 User user -> user.getUserId(); 가필요할듯함.
         //여기서 자신의 상품은 자신이 판매 요청을 할 수 없게 판단하는 로직을 넣을것인가 말것인가 의논 필요
@@ -68,23 +69,21 @@ public class CustomerServiceImpl implements CustomerService {
         if (customerRequestListRepository.findByProductId(productId) != null) {
 
             throw new IllegalArgumentException("이미 구매요청이 걸려있는 상품입니다!");
-        } else {
-            Product product = productRepository.findById(productId).orElseThrow(
-                    () -> new IllegalArgumentException("구매하고자 하는 상품이 없습니다!")
-            );
-
-
-            customerRequestListRepository.save(new CustomerRequestList(userId, product.getUserId(), product.getId()));
-            return "구매요청이 완료되었습니다!";
         }
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new IllegalArgumentException("구매하고자 하는 상품이 없습니다!")
+        );
+        CustomerRequestList customerRequestList = CustomerRequestList.builder().userId(userId).sellerId(product.getUserId()).productId(product.getId()).build();
+        customerRequestListRepository.save(customerRequestList);
+        return new StatusResponseDto(200,"구매요청 완료");
     }
     @Override
     @Transactional
-    public String requestBuyProductsByPoint(long userId, long productId) {
+    public StatusResponseDto requestBuyProductsByPoint(long userId, long productId) {
         if (customerRequestListRepository.findByProductId(productId) != null) {
 
             throw new IllegalArgumentException("이미 구매요청이 걸려있는 상품입니다!");
-        } else {
+        }
             Product product = productRepository.findById(productId).orElseThrow(
                     () -> new IllegalArgumentException("구매하고자 하는 상품이 없습니다!")
             );
@@ -92,12 +91,12 @@ public class CustomerServiceImpl implements CustomerService {
                     () -> new IllegalArgumentException("유저 정보가 유효하지 않습니다")
             );
             if (product.getPoint() > userPoint.getPoint()){
-               return  "포인트가 부족합니다.";
+                return new StatusResponseDto(200,"포인트가 부족합니다");
             }
 
             customerRequestListRepository.save(CustomerRequestList.builder().userId(userId).sellerId(product.getUserId()).usePoint(true).build());
-            return "구매요청이 완료되었습니다!";
-        }
+            return new StatusResponseDto(200,"구매요청 완료");
+
 
     }
 }

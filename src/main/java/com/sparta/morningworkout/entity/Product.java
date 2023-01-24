@@ -27,5 +27,6 @@ public class Product extends TimeStamped {
     private CategoryEnum category;
     public void update(ProductUpdateRequestDto productUpdateRequestDto) {
         this.price = productUpdateRequestDto.getPrice();
+        this.point = productUpdateRequestDto.getPrice()*2;
     }
 }

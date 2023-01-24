@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class PointUpdateRequestDto {
-    private int point;
+    private int givePoint;
 
 }

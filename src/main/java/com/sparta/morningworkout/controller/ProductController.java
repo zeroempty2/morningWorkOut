@@ -45,7 +45,6 @@ public class ProductController {
 
     @PostMapping("/seller")
     public ResponseEntity addProduct(@RequestBody ProductRequestDto productRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
         String msg = productService.addProduct(productRequestDto, userDetails.getUser());
         return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponseDto(HttpStatus.CREATED.value(), msg));
     }

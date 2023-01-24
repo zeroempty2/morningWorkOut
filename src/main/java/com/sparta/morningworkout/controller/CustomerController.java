@@ -44,22 +44,19 @@ public class CustomerController {
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.ok().headers(headers).body(responseDto);
     }
-
-
     @PostMapping("/products/{productsId}")
-    public ResponseEntity requestBuyProducts(@PathVariable long productsId, @AuthenticationPrincipal UserDetailsImpl userDetails){ // UserDetails 자리
-        String msg = customerService.requestBuyProducts(userDetails.getUser().getId(),productsId);
+    public ResponseEntity<StatusResponseDto> requestBuyProducts(@PathVariable long productsId, @AuthenticationPrincipal UserDetailsImpl userDetails){ // UserDetails 자리
+        StatusResponseDto responseDto = customerService.requestBuyProducts(userDetails.getUser().getId(),productsId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(new StatusResponseDto(HttpStatus.OK.value(),msg));
+        return ResponseEntity.ok().headers(headers).body(responseDto);
     }
+
     @PostMapping("/products/point/{productsId}")
     public ResponseEntity<StatusResponseDto> requestBuyProductsByPoint(@PathVariable long productsId, @AuthenticationPrincipal UserDetailsImpl userDetails){ // UserDetails 자리
-        String msg = customerService.requestBuyProductsByPoint(userDetails.getUser().getId(),productsId);
+        StatusResponseDto responseDto = customerService.requestBuyProductsByPoint(userDetails.getUser().getId(),productsId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(new StatusResponseDto(HttpStatus.OK.value(),msg));
+        return ResponseEntity.ok().headers(headers).body(responseDto);
     }
 }

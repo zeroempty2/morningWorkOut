@@ -19,7 +19,7 @@ import java.util.List;
 public class ChatController {
     private final ChatServiceImpl chatService;
     @PostMapping
-    public ResponseEntity<StatusResponseDto> sendChat(@AuthenticationPrincipal UserDetailsImpl userDetails, ChatRequestDto chatRequestDto) {
+    public ResponseEntity<StatusResponseDto> sendChat(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody ChatRequestDto chatRequestDto) {
         StatusResponseDto statusResponseDto = chatService.sendChat(chatRequestDto, userDetails.getUserId());
         HttpHeaders headers = new HttpHeaders();
         return ResponseEntity.ok().headers(headers).body(statusResponseDto);

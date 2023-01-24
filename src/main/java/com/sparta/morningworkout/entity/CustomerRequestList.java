@@ -34,8 +34,6 @@ public class CustomerRequestList extends TimeStamped{
         this.userId = userId;
         this.sellerId = sellerId;
         this.productId = productId;
-        this.isAccepted = false;
-        this.usePoint = false;
     }
 
     public void acceptBySeller(){
