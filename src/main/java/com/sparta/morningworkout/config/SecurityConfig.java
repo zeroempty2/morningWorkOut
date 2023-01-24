@@ -44,6 +44,7 @@ public class SecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .requestMatchers("/users/sign")
                 .requestMatchers("/users/login")
+//                .requestMatchers("/ws/**")
                 .requestMatchers("/users/logout");
     }
 
@@ -65,6 +66,8 @@ public class SecurityConfig {
                 .requestMatchers("/products/list/seller/**").permitAll()
                 .requestMatchers("/point/**").permitAll()
                 .requestMatchers("/point/admin").hasAnyRole("ADMIN")
+                .requestMatchers("/ws/chat/**").permitAll()
+                .requestMatchers("/app/chat/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 
@@ -75,4 +78,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }

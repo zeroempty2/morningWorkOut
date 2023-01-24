@@ -101,4 +101,9 @@ public class ProductServiceImpl implements ProductService {
         return products;
 
     }
+
+    @Override
+    public Product findProduct(Long productId) {
+        return productRepository.findById(productId).orElseThrow(()->new IllegalArgumentException("해당 상품은 없는 상품입니다"));
+    }
 }

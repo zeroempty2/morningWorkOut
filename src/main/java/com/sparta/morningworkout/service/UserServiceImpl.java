@@ -81,6 +81,11 @@ public class UserServiceImpl implements UserService {
                 sellerRegistRepository.save(sellerRegist);
     }
 
+    @Override
+    public User findUser(long userId) {
+        return userRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("해당 유저는 존재하지않습니다"));
+    }
+
     //유저 이름으로 상품을 검색하기 위해 유저 서비스딴에 유저의 이름으로 유저의 아이디를 뱉어내는 함수 추가.
 //    public List<Long> getUserIdByName(String username){
 //        List<User> users = userRepository.findByUsernameContaining(username);

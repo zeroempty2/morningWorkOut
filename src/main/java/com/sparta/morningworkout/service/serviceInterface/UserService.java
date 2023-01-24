@@ -17,5 +17,9 @@ public interface UserService {
     void logout(User user);
     void sellerRegist(SellerRegistRequestDto sellerRegistRequestDto, User user);
 
+    User findUser(long userId);
+
+//    User findUserName(String username);
+
 //    List<Long> getUserIdByName(String username);
 }

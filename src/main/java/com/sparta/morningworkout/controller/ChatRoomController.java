@@ -1,5 +1,6 @@
 package com.sparta.morningworkout.controller;
 
+import com.sparta.morningworkout.dto.ChatRoomDto;
 import com.sparta.morningworkout.entity.Product;
 import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.entity.chat.ChatRoom;
@@ -33,15 +34,35 @@ public class ChatRoomController {
 
 
     @GetMapping("/rooms")
-    public List<ChatRoom> room() {
+    @ResponseBody
+    public List<ChatRoomDto> room() {
         return chatService.findAllRoom();
     }
 
-    @PostMapping("/room")
-    public ChatRoom createRoom(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam Long productId){
+    @PostMapping("/room/{productId}")
+    public ChatRoom createRoom(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long productId){
         User customer = userDetails.getUser();
         Product product = productService.findProduct(productId);
         User seller = userService.findUser(product.getUserId());
         return chatService.createRoom(customer, seller, product);
     }
+
+    //특정 채팅방 조회
+    @GetMapping("/room/{roomId}")
+    @ResponseBody
+    public ChatRoomDto roomInfo(@PathVariable Long roomId) {
+        return chatService.findById(roomId);
+    }
+
+
+    // 채팅방 입장 화면
+    @GetMapping("/room/enter/{roomId}")
+    public String roomDetail(Model model, @PathVariable String roomId) {
+        model.addAttribute("roomId", roomId);
+        return "/chat/roomdetail";
+    }
+
+
 }
+
+
