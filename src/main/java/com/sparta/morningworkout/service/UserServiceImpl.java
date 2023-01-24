@@ -12,6 +12,7 @@ import com.sparta.morningworkout.repository.ProfileRepository;
 import com.sparta.morningworkout.repository.SellerRegistRepository;
 import com.sparta.morningworkout.repository.UserRepository;
 import com.sparta.morningworkout.service.serviceInterface.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void signup(SignupDto sign) {
+    public String signup(SignupDto sign) {
         Optional<User> users = userRepository.findByUsername(sign.getUsername());
         if (users.isPresent()) { throw new IllegalArgumentException("유저가 존재합니다"); }
         String username = sign.getUsername();
@@ -58,25 +59,29 @@ public class UserServiceImpl implements UserService {
         profileRepository.save(profile);
         Point point = new Point(user.getId(),1000);
         pointRepository.save(point);
+        return "회원가입 성공";
     }
 
     @Override
-    public String login(LoginUserRequestDto loginUserRequestDto) {
+    public String login(LoginUserRequestDto loginUserRequestDto, HttpServletResponse response) {
         User user = userRepository.findByUsername(loginUserRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다"));
         if (!passwordEncoder.matches(loginUserRequestDto.getPassword(),user.getPassword()))
         { throw new IllegalArgumentException("비밀번호 불일치"); }
-        return jwtUtil.createToken(user.getUsername(), user.getRole());
+        String token = jwtUtil.createToken(user.getUsername(), user.getRole());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+        return "로그인 성공";
     }
 
     @Override
     public void logout(User user) {}
 
     @Override
-    public void sellerRegist(SellerRegistRequestDto sellerRegistRequestDto, User user) {
+    public String sellerRegist(SellerRegistRequestDto sellerRegistRequestDto, User user) {
                 SellerRegist sellerRegist = new SellerRegist(user.getId(), user.getUsername(),
                         sellerRegistRequestDto.getInfoContent(),sellerRegistRequestDto.getCategory());
                 sellerRegistRepository.save(sellerRegist);
+        return "판매자 요청 성공";
     }
 
     //유저 이름으로 상품을 검색하기 위해 유저 서비스딴에 유저의 이름으로 유저의 아이디를 뱉어내는 함수 추가.

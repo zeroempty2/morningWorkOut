@@ -1,0 +1,20 @@
+// 예시
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== REQUEST
+
+include::{snippets}/userController/sign/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/userController/sign/http-response.adoc[]
+
+== REQUEST - BODY
+
+include::{snippets}/userController/sign/request-body.adoc[]
+
+== RESPONSE - BODY
+
+include::{snippets}/userController/sign/response-body.adoc[]

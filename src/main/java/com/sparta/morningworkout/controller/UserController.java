@@ -1,5 +1,6 @@
 package com.sparta.morningworkout.controller;
 
+import com.sparta.morningworkout.dto.RestApiResponse;
 import com.sparta.morningworkout.dto.users.LoginUserRequestDto;
 import com.sparta.morningworkout.dto.users.SellerRegistRequestDto;
 import com.sparta.morningworkout.dto.users.SignupDto;
@@ -18,32 +19,41 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping( "/users")
+@RequestMapping("/users")
 public class UserController {
     private final UserServiceImpl userServiceimpl;
+
     @PostMapping("/sign")
     public ResponseEntity createUser(@RequestBody @Valid SignupDto sign) {
-        userServiceimpl.signup(sign);
-        return new ResponseEntity<>("회원가입 성공", HttpStatus.CREATED);
+        String msg = userServiceimpl.signup(sign);
+        RestApiResponse restApiResponse = new RestApiResponse(HttpStatus.CREATED, msg);
+        return ResponseEntity.status(HttpStatus.CREATED).body(restApiResponse);
     }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginUserRequestDto loginUserRequestDto, HttpServletResponse response) {
-        String generatedToken = userServiceimpl.login(loginUserRequestDto);
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, generatedToken);
-        return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
+        String msg = userServiceimpl.login(loginUserRequestDto, response);
+        RestApiResponse restApiResponse = new RestApiResponse(HttpStatus.OK, msg);
+
+        return ResponseEntity.status(HttpStatus.OK).body(restApiResponse);
     }
+
     @Transactional
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletResponse response) {
         response.setHeader(JwtUtil.AUTHORIZATION_HEADER, null);
-        return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+        String msg = "로그아웃 성공";
+        RestApiResponse restApiResponse = new RestApiResponse(HttpStatus.OK, msg);
+
+        return ResponseEntity.status(HttpStatus.OK).body(restApiResponse);
     }
 
     @PostMapping("/authorization")
     public ResponseEntity athorization(@RequestBody SellerRegistRequestDto sellerRegistRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
-        userServiceimpl.sellerRegist(sellerRegistRequestDto, user);
-        return new ResponseEntity<>("등록 요청이 성공했습니다", HttpStatus.OK);
+        String msg = userServiceimpl.sellerRegist(sellerRegistRequestDto, user);
+        RestApiResponse restApiResponse = new RestApiResponse(HttpStatus.OK, msg);
+
+        return ResponseEntity.status(HttpStatus.OK).body(restApiResponse);
     }
 }
