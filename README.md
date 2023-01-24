@@ -29,7 +29,7 @@
 ![img_2.png](img_2.png)
 
 # UML ✍️
-![img_1.png](img_1.png)
+![UML drawio](https://user-images.githubusercontent.com/117061586/214309739-862cac34-8246-4ad5-b454-366c4af2b95e.png)
 
 > #### Team Notion : https://www.notion.so/SA-e25d2886267d40ca95a298b7e1aa74ac
 > #### Team GitHub : https://github.com/zeroempty2/morningWorkOut
