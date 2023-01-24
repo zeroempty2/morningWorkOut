@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @SuperBuilder
 public class TimeStamped {
-
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate

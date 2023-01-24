@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
                 .productName(productRequestDto.getProductName())
                 .price(productRequestDto.getPrice())
                 .category(productRequestDto.getCategoryEnum())
+                .point(productRequestDto.getPrice()*2)
                 .userId(user.getId()) //해당 유저 부분은 추후 시큐리티에서 인증된 user를 넣어서 진행할 예정
                 .build();
         productRepository.save(product);
@@ -96,9 +97,7 @@ public class ProductServiceImpl implements ProductService {
 
     public Page<ProductResponseSearchByNameDto> searchBySellerName(int page, int size,String sellerName) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<ProductResponseSearchByNameDto> products = productRepository.findAllBySellerName(sellerName,pageable);
-
-        return products;
+        return productRepository.findAllBySellerName(sellerName,pageable);
 
     }
 }

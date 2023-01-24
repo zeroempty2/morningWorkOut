@@ -109,6 +109,7 @@ public class TestDataRunner implements ApplicationRunner {
                     .userId(sellerId)
                     .productName(productRequestDto.getProductName())
                     .price(productRequestDto.getPrice())
+                    .point(productRequestDto.getPrice()*2)
                     .category(productRequestDto.getCategoryEnum())
                     .build();
             productRepository.save(product);

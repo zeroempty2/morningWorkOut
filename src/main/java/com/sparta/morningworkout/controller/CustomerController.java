@@ -55,7 +55,7 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(new StatusResponseDto(HttpStatus.OK.value(),msg));
     }
     @PostMapping("/products/point/{productsId}")
-    public ResponseEntity requestBuyProductsByPoint(@PathVariable long productsId, @AuthenticationPrincipal UserDetailsImpl userDetails){ // UserDetails 자리
+    public ResponseEntity<StatusResponseDto> requestBuyProductsByPoint(@PathVariable long productsId, @AuthenticationPrincipal UserDetailsImpl userDetails){ // UserDetails 자리
         String msg = customerService.requestBuyProductsByPoint(userDetails.getUser().getId(),productsId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));

@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @SuperBuilder
 @NoArgsConstructor
-public class Product extends TimeStamped{
+public class Product extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -25,13 +25,6 @@ public class Product extends TimeStamped{
     @Column
     @Enumerated(EnumType.STRING)
     private CategoryEnum category;
-    public Product(long userId, String productName, int price, CategoryEnum category){
-         this.userId = userId;
-         this.productName = productName;
-         this.price = price;
-         this.category = category;
-         this.point = price*2;
-    }
     public void update(ProductUpdateRequestDto productUpdateRequestDto) {
         this.price = productUpdateRequestDto.getPrice();
     }

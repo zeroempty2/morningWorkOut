@@ -95,7 +95,7 @@ public class AdminServiceImpl implements AdminService {
                 () -> new IllegalArgumentException("찾는 유저가 없습니다.")
         );
         point.plusPoint(pointUpdateDto.getPoint());
-        return new StatusResponseDto(200,"판매자 취소가 완료되었습니다");
+        return new StatusResponseDto(200,"포인트 지급이 완료되었습니다");
     }
 
 }
