@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class SellerRegistRequestDto {
-    private String infocontent;
-    private CategoryEnum categoryEnum;
+    private String infoContent;
+    private CategoryEnum category;
 }

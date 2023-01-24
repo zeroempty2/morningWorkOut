@@ -79,22 +79,20 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public StatusResponseDto deleteSellerRegist(Long authorizationRequestId) {
-        long userId = sellerRegistRepository.findById(authorizationRequestId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않습니다.")
-        ).getUserId();
+    public StatusResponseDto deleteSellerRegist(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않습니다.")
         );
         user.changeCustomer();
         return new StatusResponseDto(200,"판매자 취소가 완료되었습니다");
     }
-
+    @Override
     public StatusResponseDto givePoint(Long userId, PointUpdateRequestDto pointUpdateDto) {
         Point point = pointRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("찾는 유저가 없습니다.")
         );
-        point.plusPoint(pointUpdateDto.getPoint());
+        point.plusPoint(pointUpdateDto.getGivePoint());
+        pointRepository.save(point);
         return new StatusResponseDto(200,"포인트 지급이 완료되었습니다");
     }
 

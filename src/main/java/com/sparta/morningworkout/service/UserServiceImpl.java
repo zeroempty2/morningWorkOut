@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void sellerRegist(SellerRegistRequestDto sellerRegistRequestDto, User user) {
                 SellerRegist sellerRegist = new SellerRegist(user.getId(), user.getUsername(),
-                        sellerRegistRequestDto.getInfocontent(),sellerRegistRequestDto.getCategoryEnum());
+                        sellerRegistRequestDto.getInfoContent(),sellerRegistRequestDto.getCategory());
                 sellerRegistRepository.save(sellerRegist);
     }
 
