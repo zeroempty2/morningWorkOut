@@ -1,6 +1,6 @@
 package com.sparta.morningworkout.service;
 
-import com.sparta.morningworkout.dto.customer.CustomerListResponseDto;
+
 import com.sparta.morningworkout.entity.Product;
 import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.repository.CustomerRequestListRepository;

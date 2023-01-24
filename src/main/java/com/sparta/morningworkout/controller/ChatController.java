@@ -18,10 +18,13 @@ import java.util.List;
 @RequestMapping("/chat")
 public class ChatController {
     private final ChatServiceImpl chatService;
-    @PostMapping
-    public ResponseEntity<StatusResponseDto> sendChat(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody ChatRequestDto chatRequestDto) {
-        StatusResponseDto statusResponseDto = chatService.sendChat(chatRequestDto, userDetails.getUserId());
+    @PostMapping("/{chatRoomId}")
+    public ResponseEntity<StatusResponseDto> sendChat(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody ChatRequestDto chatRequestDto,@PathVariable long chatRoomId) {
+        StatusResponseDto statusResponseDto = chatService.sendChat(chatRequestDto, userDetails.getUserId(),chatRoomId);
         HttpHeaders headers = new HttpHeaders();
+        if(statusResponseDto.getStatusCode() == 400){
+            return ResponseEntity.badRequest().headers(headers).body(statusResponseDto);
+        }
         return ResponseEntity.ok().headers(headers).body(statusResponseDto);
     }
     @GetMapping("/{chatRoomId}")

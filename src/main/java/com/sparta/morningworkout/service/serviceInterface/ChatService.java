@@ -7,6 +7,6 @@ import com.sparta.morningworkout.dto.chat.ChatResponseDto;
 import java.util.List;
 
 public interface ChatService {
-    StatusResponseDto sendChat(ChatRequestDto chatRequestDto, long senderId);
+    StatusResponseDto sendChat(ChatRequestDto chatRequestDto, long senderId,long chatRoomId);
     List<ChatResponseDto> loadChat(long userId, long chatRoomId);
 }

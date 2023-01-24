@@ -1,9 +1,9 @@
 package com.sparta.morningworkout.service;
 
+import com.sparta.morningworkout.dto.customer.CustomerRequestResponseDto;
 import com.sparta.morningworkout.dto.search.CustomerListBySellerDto;
-import com.sparta.morningworkout.dto.customer.CustomerListResponseDto;
 import com.sparta.morningworkout.dto.product.ProductResponseDto;
-import com.sparta.morningworkout.entity.CustomerRequestList;
+import com.sparta.morningworkout.entity.CustomerRequest;
 import com.sparta.morningworkout.entity.Point;
 import com.sparta.morningworkout.entity.Product;
 import com.sparta.morningworkout.entity.User;
@@ -28,41 +28,38 @@ public class SellerServiceImpl implements SellerService {
     private final PointRepository pointRepository;
     @Override
     @Transactional(readOnly = true)
-    public Page<CustomerListResponseDto> showCustomerList(int page,int size, User user) {
-
+    public Page<CustomerRequestResponseDto> showCustomerList(int page, int size, long sellerId) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<CustomerRequestList> customerList = customerRequestListRepository.findAllBySellerId(user.getId(),pageable);
-
-        if(customerList==null){
-            throw new IllegalArgumentException("판매요청한 구매자가 없습니다!");
-        }
-
-        return customerList.map(CustomerListResponseDto::new);
+        return customerRequestListRepository.findAllCustomersBySellerId(sellerId,pageable);
 
        // return new PageImpl<>(customerList.stream().map(CustomerListResponseDto::new).collect(Collectors.toList()));
-
 
     }
 
     @Override
     @Transactional
-    public String acceptBuyRequest(long customerId) {
+    public String acceptBuyRequest(long customerRequestId) {
 
-        //API에서 ID값 없는데 줘야할듯함
-        CustomerRequestList customerRequestList = customerRequestListRepository.findByUserId(customerId);
+        //API에서 ID값 없는데 줘야할듯함 -> ?? 왜 유저 id를 받습니까 ㄹㅇ니ㅏ러ㅏㅣ너아ㅣㅓㄴㅇ리ㅏㄴ
+        CustomerRequest customerRequest = customerRequestListRepository.findById(customerRequestId).orElseThrow(
+                () -> new IllegalArgumentException("유효하지 않은 구매요청입니다")
+        );
+        if(customerRequest.isAccepted()){
+            return "이미 처리된 요청입니다";
+        }
 
-        if(customerRequestList==null){
+        if(customerRequest ==null){
             throw new IllegalArgumentException("해당 사용자의 판매요청이 없습니다!");
         }
-        customerRequestList.acceptBySeller();
-        if(customerRequestList.isUsePoint()){
-            Point customerPoint = pointRepository.findById(customerRequestList.getUserId()).orElseThrow(
+        customerRequest.acceptBySeller();
+        if(customerRequest.isUsePoint()){
+            Point customerPoint = pointRepository.findById(customerRequest.getUserId()).orElseThrow(
                     () -> new IllegalArgumentException("유저의 정보가 잘못되었습니다")
             );
-            Point sellerPoint = pointRepository.findById(customerRequestList.getSellerId()).orElseThrow(
+            Point sellerPoint = pointRepository.findById(customerRequest.getSellerId()).orElseThrow(
                     () -> new IllegalArgumentException("판매자 정보가 잘못되었습니다")
             );
-            int productPoint = productRepository.findById(customerRequestList.getProductId()).orElseThrow(
+            int productPoint = productRepository.findById(customerRequest.getProductId()).orElseThrow(
                     () -> new IllegalArgumentException("상품 정보가 잘못되었습니다")
             ).getPoint();
             customerPoint.minusPoint(productPoint);

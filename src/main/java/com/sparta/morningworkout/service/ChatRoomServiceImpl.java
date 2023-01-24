@@ -25,11 +25,11 @@ public class ChatRoomServiceImpl implements ChatroomService {
         ChatRoom chatroom = chatRoomRepository.findById(chatRoomId).orElseThrow(
                 () -> new IllegalArgumentException("유효하지 않은 채팅방입니다.")
         );
-        if(chatroom.getSendUserId() != userId || chatroom.getReceiveUserId() != userId){
+        if(chatroom.getSendUserId() != userId && chatroom.getReceiveUserId() != userId){
             return new StatusResponseDto(400,"유효하지 않은 유저입니다.");
         }
         chatroom.closeChatRoom();
-        return new StatusResponseDto(200,"채팅 종료 채팅을 더이상 보낼 수 없습니다.");
+        return new StatusResponseDto(200,"채팅 종료, 채팅을 더이상 보낼 수 없습니다.");
     }
 
 

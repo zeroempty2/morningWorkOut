@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Getter
 @SuperBuilder
-public class CustomerRequestList extends TimeStamped{
+public class CustomerRequest extends TimeStamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +30,7 @@ public class CustomerRequestList extends TimeStamped{
     @Column
     private boolean isAccepted;
 
-    public CustomerRequestList(long userId, long sellerId, long productId) {
+    public CustomerRequest(long userId, long sellerId, long productId) {
         this.userId = userId;
         this.sellerId = sellerId;
         this.productId = productId;
