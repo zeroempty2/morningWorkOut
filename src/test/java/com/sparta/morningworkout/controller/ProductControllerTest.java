@@ -109,4 +109,15 @@ class ProductControllerTest {
         mockMvc.perform(get("/products/list/seller/{sellerId}", sellerId))
                 .andExpect(status().isOk());
     }
+
+    @Test
+//    @DisplayName()
+    void searchByProductsName(){
+
+    }
+
+    @Test
+    void searchBySellerName(){
+
+    }
 }
