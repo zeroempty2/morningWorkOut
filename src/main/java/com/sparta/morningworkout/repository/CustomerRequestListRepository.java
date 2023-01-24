@@ -12,7 +12,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface CustomerRequestListRepository extends JpaRepository<CustomerRequest,Long> {
 
     CustomerRequest findByProductId(Long productId);
-    @Query("select new com.sparta.morningworkout.dto.customer.CustomerRequestResponseDto(c.id,c.productId,c.userId,p.nickname,c.isAccepted) from Profile p left join CustomerRequest c on p.id = c.userId where c.sellerId = :sellerId")
+    @Query("select new com.sparta.morningworkout.dto.customer.CustomerRequestResponseDto(c.id,c.productId,c.userId,p.nickname,c.isAccepted) " +
+            "from CustomerRequest c left join Profile p on p.id = c.userId where c.sellerId = :sellerId")
     Page<CustomerRequestResponseDto> findAllCustomersBySellerId(long sellerId, Pageable pageable);
 
     CustomerRequest findByUserId(Long userId);

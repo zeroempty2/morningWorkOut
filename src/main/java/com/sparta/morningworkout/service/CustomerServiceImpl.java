@@ -96,8 +96,5 @@ public class CustomerServiceImpl implements CustomerService {
 
             customerRequestListRepository.save(CustomerRequest.builder().userId(userId).sellerId(product.getUserId()).usePoint(true).build());
             return new StatusResponseDto(200,"구매요청 완료");
-
-
     }
 }
-
