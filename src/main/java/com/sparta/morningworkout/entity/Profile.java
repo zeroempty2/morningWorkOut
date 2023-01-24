@@ -44,8 +44,10 @@ public class Profile extends TimeStamped{
 		this.category = sellerRegist.getCategory();
 	}
 
-	public void customerUpdate(UpdateCustomerProfileRequestDto request) {
+	public void profileUpdate(UpdateCustomerProfileRequestDto request) {
 		this.nickname = request.getNickname();
+		this.infoContent = request.getInfoContent();
+		this.category = request.getCategory();
 	}
 
 	public void sellerUpdate(UpdateSellerProfileRequestDto request) {

@@ -1,23 +1,23 @@
 package com.sparta.morningworkout.repository;
 
 
+import com.sparta.morningworkout.dto.customer.CustomerRequestResponseDto;
 import com.sparta.morningworkout.dto.search.CustomerListBySellerDto;
-import com.sparta.morningworkout.entity.CustomerRequestList;
+import com.sparta.morningworkout.entity.CustomerRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface CustomerRequestListRepository extends JpaRepository<CustomerRequestList,Long> {
+public interface CustomerRequestListRepository extends JpaRepository<CustomerRequest,Long> {
 
-    CustomerRequestList findByProductId(Long productId);
-    Page<CustomerRequestList> findAllBySellerId(Long sellerId, Pageable pageable);
+    CustomerRequest findByProductId(Long productId);
+    @Query("select new com.sparta.morningworkout.dto.customer.CustomerRequestResponseDto(c.id,c.productId,c.userId,p.nickname,c.isAccepted) from Profile p left join CustomerRequest c on p.id = c.userId where c.sellerId = :sellerId")
+    Page<CustomerRequestResponseDto> findAllCustomersBySellerId(long sellerId, Pageable pageable);
 
-    CustomerRequestList findByUserId(Long userId);
+    CustomerRequest findByUserId(Long userId);
 
     @Query(value = "SELECT new com.sparta.morningworkout.dto.search.CustomerListBySellerDto(u.username,p.nickname) " +
-            "from Profile p join users u on p.id = u.id join CustomerRequestList c on c.userId = u.id where u.username like %:keyword% AND c.sellerId=:sellerId")
+            "from Profile p join users u on p.id = u.id join CustomerRequest c on c.userId = u.id where u.username like %:keyword% AND c.sellerId=:sellerId")
     Page<CustomerListBySellerDto> findAllByCustomerName(long sellerId, String keyword, Pageable pageable);
 }

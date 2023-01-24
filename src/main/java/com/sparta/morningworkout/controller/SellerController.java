@@ -1,8 +1,9 @@
 package com.sparta.morningworkout.controller;
 
 import com.sparta.morningworkout.dto.StatusResponseDto;
+import com.sparta.morningworkout.dto.customer.CustomerRequestResponseDto;
 import com.sparta.morningworkout.dto.search.CustomerListBySellerDto;
-import com.sparta.morningworkout.dto.customer.CustomerListResponseDto;
+
 import com.sparta.morningworkout.dto.product.ProductResponseDto;
 import com.sparta.morningworkout.dto.search.ProductResponseSearchByNameDto;
 import com.sparta.morningworkout.security.UserDetailsImpl;
@@ -26,8 +27,8 @@ public class SellerController {
     private final SellerServiceImpl sellerService;
 
     @GetMapping("/customers")
-    public ResponseEntity<Page<CustomerListResponseDto>> showCustomerList(@RequestParam int page,@RequestParam int size, @AuthenticationPrincipal UserDetailsImpl userDetails){
-       Page<CustomerListResponseDto> customerListResponseDtoList = sellerService.showCustomerList(page-1,size,userDetails.getUser());
+    public ResponseEntity<Page<CustomerRequestResponseDto>> showCustomerList(@RequestParam int page, @RequestParam int size, @AuthenticationPrincipal UserDetailsImpl userDetails){
+       Page<CustomerRequestResponseDto> customerListResponseDtoList = sellerService.showCustomerList(page-1,size,userDetails.getUserId());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(customerListResponseDtoList);
@@ -41,10 +42,9 @@ public class SellerController {
         return ResponseEntity.status(HttpStatus.OK).body(customerListResponseDtos);
     }
 
-    @PostMapping("/customers/{customerId}")
-    public ResponseEntity acceptBuyRequest(@PathVariable long customerId){
-
-        String msg = sellerService.acceptBuyRequest(customerId);
+    @PostMapping("/customers/{customerRequestId}")
+    public ResponseEntity acceptBuyRequest(@PathVariable long customerRequestId){
+        String msg = sellerService.acceptBuyRequest(customerRequestId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(new StatusResponseDto(HttpStatus.OK.value(), msg));
@@ -65,6 +65,5 @@ public class SellerController {
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(products);
     }
-
 
 }

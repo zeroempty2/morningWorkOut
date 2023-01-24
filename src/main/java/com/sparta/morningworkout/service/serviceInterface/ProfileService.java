@@ -6,8 +6,8 @@ import com.sparta.morningworkout.dto.profile.UpdateCustomerProfileRequestDto;
 import com.sparta.morningworkout.dto.profile.UpdateSellerProfileRequestDto;
 
 public interface ProfileService {
-    void updateCustomerProfile(long id, UpdateCustomerProfileRequestDto request, String username);
+    void updateProfile(long id, UpdateCustomerProfileRequestDto request, long userId);
     void updateSellerProfile(long id, UpdateSellerProfileRequestDto request, String username);
-    ShowCustomerProfileResponseDto showCustomerProfile(long id, String username);
-    ShowSellerProfileResponseDto showSellerProfile(long id, String username);
+    ShowCustomerProfileResponseDto showMyProfile(long id);
+    ShowSellerProfileResponseDto showProfile(long id);
 }

@@ -73,8 +73,8 @@ public class CustomerServiceImpl implements CustomerService {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("구매하고자 하는 상품이 없습니다!")
         );
-        CustomerRequestList customerRequestList = CustomerRequestList.builder().userId(userId).sellerId(product.getUserId()).productId(product.getId()).build();
-        customerRequestListRepository.save(customerRequestList);
+        CustomerRequest customerRequest = CustomerRequest.builder().userId(userId).sellerId(product.getUserId()).productId(product.getId()).build();
+        customerRequestListRepository.save(customerRequest);
         return new StatusResponseDto(200,"구매요청 완료");
     }
     @Override
@@ -94,7 +94,7 @@ public class CustomerServiceImpl implements CustomerService {
                 return new StatusResponseDto(200,"포인트가 부족합니다");
             }
 
-            customerRequestListRepository.save(CustomerRequestList.builder().userId(userId).sellerId(product.getUserId()).usePoint(true).build());
+            customerRequestListRepository.save(CustomerRequest.builder().userId(userId).sellerId(product.getUserId()).usePoint(true).build());
             return new StatusResponseDto(200,"구매요청 완료");
 
 

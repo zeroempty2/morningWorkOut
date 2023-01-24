@@ -24,7 +24,7 @@ public class ChatRoomController {
         StatusResponseDto statusResponseDto = chatroomService.createChatRoom(userDetails.getUserId(),receiverId);
         return ResponseEntity.ok().headers(headers).body(statusResponseDto);
     }
-    @PostMapping("/{chatroomId}")
+    @PostMapping("/close/{chatroomId}")
     public ResponseEntity<StatusResponseDto> closeChatRoom(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable long chatroomId) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));

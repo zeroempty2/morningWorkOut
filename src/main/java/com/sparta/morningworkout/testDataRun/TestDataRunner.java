@@ -52,10 +52,10 @@ public class TestDataRunner implements ApplicationRunner {
         Profile testCustomerProfile2 = Profile.builder().id(testCustomerUser2.getId()).nickname("테스트유저2").build();
         profileRepository.save(testCustomerProfile2);
 
-        CustomerRequestList customerRequestList1 = CustomerRequestList.builder().userId(testCustomerUser.getId()).sellerId(testSellerUser.getId()).productId(1L).build();
-        customerRequestListRepository.save(customerRequestList1);
-        CustomerRequestList customerRequestList2 = CustomerRequestList.builder().userId(testCustomerUser2.getId()).sellerId(testSellerUser.getId()).productId(2L).build();
-        customerRequestListRepository.save(customerRequestList2);
+        CustomerRequest customerRequest1 = CustomerRequest.builder().userId(testCustomerUser.getId()).sellerId(testSellerUser.getId()).productId(1L).build();
+        customerRequestListRepository.save(customerRequest1);
+        CustomerRequest customerRequest2 = CustomerRequest.builder().userId(testCustomerUser2.getId()).sellerId(testSellerUser.getId()).productId(2L).build();
+        customerRequestListRepository.save(customerRequest2);
         List<ProductRequestDto> productRequestDtoList = new ArrayList<>();
 
         productRequestDtoList.add(new ProductRequestDto("맥북프로",5000000, CategoryEnum.IT));

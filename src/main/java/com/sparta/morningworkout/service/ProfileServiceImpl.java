@@ -27,19 +27,12 @@ public class ProfileServiceImpl implements ProfileService {
 	private final UserRepository userRepository;
 
 	@Override
-	public void updateCustomerProfile(long id, UpdateCustomerProfileRequestDto request, String username) {
-		Profile profile = profileRepository.findById(id).orElseThrow(
+	public void updateProfile(long profileId, UpdateCustomerProfileRequestDto request, long userId) {
+		Profile profile = profileRepository.findById(profileId).orElseThrow(
 			() -> new RuntimeException("수정할 프로필이 없습니다.")
 		);
-		User user = userRepository.findByUsername(username).orElseThrow(
-			() -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-		);
-		if (profile.checkAuthorization(user)) {
-			profile.customerUpdate(request);
+			profile.profileUpdate(request);
 			this.profileRepository.save(profile);
-		} else {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "본인 프로필만 수정할 수 있습니다.");
-		}
 	}
 
 	@Override
@@ -61,33 +54,20 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ShowCustomerProfileResponseDto showCustomerProfile(long id, String username) {
+	public ShowCustomerProfileResponseDto showMyProfile(long id) {
 		Profile profile = profileRepository.findById(id).orElseThrow(
 			() -> new RuntimeException("조회할 프로필이 없습니다.")
 		);
-		User user = userRepository.findByUsername(username).orElseThrow(
-			() -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-		);
-		if (profile.checkAuthorization(user)) {
 			return new ShowCustomerProfileResponseDto(profile);
-		} else {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "본인 프로필만 수정할 수 있습니다.");
 		}
-	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public ShowSellerProfileResponseDto showSellerProfile(long id, String username) {
+	public ShowSellerProfileResponseDto showProfile(long id) {
 		Profile profile = profileRepository.findById(id).orElseThrow(
 			() -> new RuntimeException("조회할 프로필이 없습니다.")
 		);
-		User user = userRepository.findByUsername(username).orElseThrow(
-			() -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-		);
-		if (profile.checkAuthorization(user)) {
-			return new ShowSellerProfileResponseDto(profile);
-		} else {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "본인 프로필만 수정할 수 있습니다.");
-		}
+		return new ShowSellerProfileResponseDto(profile);
+
 	}
 }
