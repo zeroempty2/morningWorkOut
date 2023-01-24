@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.sparta.morningworkout.entity.UserRoleEnum.Authority.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -54,17 +53,22 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeHttpRequests()
-                .requestMatchers("/users/sign").permitAll()
-                .requestMatchers("/users/login").permitAll()
                 .requestMatchers("/products/seller/**").hasAnyRole("SELLER")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                .requestMatchers("/sellers/**").hasAnyRole("SELLER")
+                .requestMatchers("/sellers/**").hasAnyRole("SELLER","ADMIN")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                .requestMatchers("/sellers/**").hasAnyRole("SELLER") // Enum형태로 넣으면 인식 못함!
+                 // Enum형태로 넣으면 인식 못함!
                 .requestMatchers("/products/list").permitAll()
+                .requestMatchers("/products/search/**").permitAll()
                 .requestMatchers("/products/list/seller/**").permitAll()
                 .requestMatchers("/point/**").permitAll()
                 .requestMatchers("/point/admin").hasAnyRole("ADMIN")
+                .requestMatchers("/chat/**").permitAll()
+                .requestMatchers("/chatroom/**").permitAll()
+                .requestMatchers("/customers/**").permitAll()
+                .requestMatchers("/profile/**").permitAll()
+                .requestMatchers("/sellers/**").hasAnyRole("SELLER")
+                .requestMatchers("/users/**").hasAnyRole("CUSTOMER")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 
