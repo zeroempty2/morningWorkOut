@@ -21,7 +21,7 @@
 
 
 # 개발환경  🛠
-[![My Skills](https://skillicons.dev/icons?i=java,spring,gradle,idea,git,github)](https://skillicons.dev)<br>
+[![My Skills](https://skillicons.dev/icons?i=java,spring,gradle,idea,git,github )](https://skillicons.dev)<br>
 > Spring Version : 3.0.1<br>
 > JDK Version : 17.0.5
 
