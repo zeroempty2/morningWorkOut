@@ -445,15 +445,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /users/login?_csrf=wgumZDVZ7R1DZNPCFlFGjIvcEEuxbzfnQv9O62EYDthRmeB2oD2QBwRt3CVuUbb3cnxytOnpPSmIW1XKcJwrigcpar0wqYZB HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /users/authorization?_csrf=CWD2XdsRdpLmjhCFNCJ9qR2BAuRZJZSLThvN9VbGHVAQQtzCbFbHO74pRPDLt3XgAQ9JkCu3L4ZtF_WmeiP4x2_0ezYoeuzx HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Content-Length: 64
+Content-Length: 60
 Host: localhost:8080
 
 {
-  "username" : "username1",
-  "password" : "password11**"
+  "infoContent" : "상품정보",
+  "category" : "IT"
 }</code></pre>
 </div>
 </div>
@@ -488,8 +488,8 @@ Content-Length: 48
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-json" data-lang="json">{
-  "username" : "username1",
-  "password" : "password11**"
+  "infoContent" : "상품정보",
+  "category" : "IT"
 }</code></pre>
 </div>
 </div>
@@ -512,7 +512,7 @@ Content-Length: 48
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-01-25 20:29:33 +0900
+Last updated 2023-01-25 23:35:51 +0900
 </div>
 </div>
 </body>

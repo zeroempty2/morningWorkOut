@@ -2,13 +2,17 @@ package com.sparta.morningworkout.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.morningworkout.annotation.WithMockCustomUser;
 import com.sparta.morningworkout.dto.users.LoginUserRequestDto;
 import com.sparta.morningworkout.dto.users.SellerRegistRequestDto;
 import com.sparta.morningworkout.dto.users.SignupDto;
 import com.sparta.morningworkout.entity.CategoryEnum;
 import com.sparta.morningworkout.entity.User;
+import com.sparta.morningworkout.entity.UserRoleEnum;
 import com.sparta.morningworkout.security.UserDetailsImpl;
+import com.sparta.morningworkout.security.UserDetailsServiceImpl;
 import com.sparta.morningworkout.service.UserServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,7 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -50,6 +55,17 @@ class UserControllerTest {
 
     @MockBean
     UserServiceImpl userService;
+
+    User user;
+
+    @BeforeEach
+    void setUser(){
+        user = User.builder()
+                .username("username1")
+                .password("password11!!")
+                .role(UserRoleEnum.SELLER)
+                .build();
+    }
 
     @Test
     @WithMockUser(username = "username1", roles = "CUSTOMER")
@@ -144,42 +160,40 @@ class UserControllerTest {
 
     }
 
-//    @Test
-//    @WithUserDetails
-//    void athorization() throws Exception {
-//
-//        UserDetailsImpl userDetails = mock(UserDetailsImpl.class);
-//        User user = User.builder()
-//                .username("username1")
-//                .password("password11!!")
-//                .build();
-//        given(userDetails.getUser()).willReturn(user);
-//
-//        SellerRegistRequestDto requestDto = SellerRegistRequestDto.builder()
-//                .infoContent("상품정보")
-//                .category(CategoryEnum.IT)
-//                .build();
-//
-//        ResultActions resultActions = mockMvc.perform(post("/users/authorization")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsBytes(requestDto))
-//                        .content(objectMapper.writeValueAsString(userDetails))
-//                        .accept(MediaType.APPLICATION_JSON)
-//                        .with(csrf()))
-//                .andExpect(status().isOk());
-//
-//        resultActions.andDo(document("userController/authorization",
-//                getDocumentRequest(),
-//                getDocumentResponsee(),
-//                requestFields(
-//                        fieldWithPath("infoContent").type(JsonFieldType.STRING).description("상품_정보"),
-//                        fieldWithPath("category").type(JsonFieldType.OBJECT).description("카테고리_내역")
-//                ),
-//                responseFields(
-//                        fieldWithPath("httpStatusCode").type(JsonFieldType.STRING).description("결과코드"),
-//                        fieldWithPath("msg").type(JsonFieldType.STRING).description("결과메시지")
-//                )
-//        ));
-//
-//    }
+    @Test
+//    @WithMockUser
+    @WithMockCustomUser
+    @WithUserDetails(value = "username1",userDetailsServiceBeanName = "userDetailsServiceImpl",setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void athorization() throws Exception {
+
+        UserDetailsImpl userDetails = mock(UserDetailsImpl.class);
+
+        given(userDetails.getUser()).willReturn(user); //mock , 스파이?- 테스트 코드 단에서 실제값이 어떤 값이 return 될건지,
+
+        SellerRegistRequestDto requestDto = SellerRegistRequestDto.builder()
+                .infoContent("상품정보")
+                .category(CategoryEnum.IT)
+                .build();
+
+        ResultActions resultActions = mockMvc.perform(post("/users/authorization")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(requestDto))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isOk());
+
+        resultActions.andDo(document("userController/authorization",
+                getDocumentRequest(),
+                getDocumentResponsee(),
+                requestFields(
+                        fieldWithPath("infoContent").type(JsonFieldType.STRING).description("상품_정보"),
+                        fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리_내역")
+                ),
+                responseFields(
+                        fieldWithPath("httpStatusCode").type(JsonFieldType.STRING).description("결과코드"),
+                        fieldWithPath("msg").type(JsonFieldType.NULL).description("결과메시지")
+                )
+        ));
+
+    }
 }

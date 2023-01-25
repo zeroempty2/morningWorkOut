@@ -1,8 +1,11 @@
 package com.sparta.morningworkout.security;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sparta.morningworkout.entity.User;
 import com.sparta.morningworkout.entity.UserRoleEnum;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Getter
 public class UserDetailsImpl implements UserDetails {
     private final User user;
 
@@ -17,9 +21,6 @@ public class UserDetailsImpl implements UserDetails {
         this.user = user;
     }
 
-    public User getUser() {
-        return user;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
