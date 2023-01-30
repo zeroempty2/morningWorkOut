@@ -64,6 +64,7 @@ class ProductServiceImplTest {
     void updateProduct()  {
         //given
 
+
         ProductUpdateRequestDto productUpdateRequestDto = new ProductUpdateRequestDto(7777);
 
         User user = mock(User.class);
