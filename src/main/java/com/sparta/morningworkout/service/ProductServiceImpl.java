@@ -64,8 +64,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Page<ProductResponseDto> showProductList(PageDto pageDto) {
-        Pageable pageable = makePage(pageDto);
+    public Page<ProductResponseDto> showProductList(Pageable pageable) {
+//        Pageable pageable = makePage(pageDto);
 
         Page<Product> products = productRepository.findAll(pageable);
 
@@ -75,18 +75,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     // 구매자가 판매자의 상품 전체조회
-    public Page<ProductResponseDto> showProductBySeller(Long sellerId, PageDto pageDto) {
-        Pageable pageable = makePage(pageDto);
+    public Page<ProductResponseDto> showProductBySeller(Long sellerId, Pageable pageable) {
+//        Pageable pageable = makePage(pageDto);
         Page<Product> products = productRepository.findAllByUserId(sellerId, pageable);
         return products.map(ProductResponseDto::new);
     }
 
-    // Pageable 생성 메서드
-    public Pageable makePage(PageDto pageDto) {
-        Sort.Direction direction = pageDto.isAsc() ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Sort sort = Sort.by(direction, pageDto.getSortBy());
-        return PageRequest.of(pageDto.getPage() - 1, pageDto.getSize(), sort);
-    }
 
     public Page<ProductResponseDto> searchByProductsName(int page,int size,String keyword) {
         // 쿼리가 한번에 나갈 수 있을까?

@@ -163,7 +163,7 @@ class UserControllerTest {
     @Test
 //    @WithMockUser
     @WithMockCustomUser
-    @WithUserDetails(value = "username1",userDetailsServiceBeanName = "userDetailsServiceImpl",setupBefore = TestExecutionEvent.TEST_EXECUTION)
+//    @WithUserDetails
     void athorization() throws Exception {
 
         UserDetailsImpl userDetails = mock(UserDetailsImpl.class);

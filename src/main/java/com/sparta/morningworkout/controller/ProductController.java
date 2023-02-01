@@ -11,6 +11,10 @@ import com.sparta.morningworkout.security.UserDetailsImpl;
 import com.sparta.morningworkout.service.serviceInterface.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,9 +33,9 @@ public class ProductController {
 
     @GetMapping("/list")
     public ResponseEntity showProductsList(
-            @RequestBody PageDto pageDto
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        Page<ProductResponseDto> productResponseDtos = productService.showProductList(pageDto);
+        Page<ProductResponseDto> productResponseDtos = productService.showProductList(pageable);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(productResponseDtos);
@@ -39,7 +43,7 @@ public class ProductController {
 
     @GetMapping("/list/seller/{sellerId}")
     public ResponseEntity showProductBySeller(@PathVariable Long sellerId, @RequestBody PageDto pageDto) {
-        Page<ProductResponseDto> productResponseDtos = productService.showProductBySeller(sellerId, pageDto);
+        Page<ProductResponseDto> productResponseDtos = productService.showProductBySeller(sellerId, makePage(pageDto));
         return ResponseEntity.status(HttpStatus.OK).body(productResponseDtos);
     }
 
@@ -77,5 +81,9 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(productResponseSearchByNameDtos);
     }
 
-
+    private Pageable makePage(PageDto pageDto) {
+        Sort.Direction direction = pageDto.isAsc() ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, pageDto.getSortBy());
+        return PageRequest.of(pageDto.getPage() - 1, pageDto.getSize(), sort);
+    }
 }
